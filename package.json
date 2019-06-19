@@ -1,0 +1,23 @@
+{
+  "name": "newton",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jack-roseman/newton.git"
+  },
+  "author": "Jack Roseman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jack-roseman/newton/issues"
+  },
+  "homepage": "https://github.com/jack-roseman/newton#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0"
+  }
+}
