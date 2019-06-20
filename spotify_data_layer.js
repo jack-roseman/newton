@@ -1,38 +1,22 @@
-const fetch = require('node-fetch');
+
 const NodeCache = require('node-cache');
 const cache = new NodeCache();
+const fetch = require('node-fetch');
+
 
 var exports = {};
 
-const SPOTIFY_CLIENT_ID = '09ddbd45bf68487298cbc24046f7e461';
-const SPOTIFY_CLIENT_SECRET = '362300d2a49b4dc590e3ac08a45524fd'
+const SPOTIFY_CLIENT_ID = 'f530b38104e943b4baa08387593feeaf';
+const SPOTIFY_CLIENT_SECRET = '6983abfc942944da8953282c430c2c85';
 
-//cache spotify credentials on server so that you only need to log in once
-async function getSpotifyToken_() {
-  const cacheKey = "SPOTIFY_CLIENT_ID="+SPOTIFY_CLIENT_ID;
-  const cached = cache.get(cacheKey);
-  if (cached != null) {
-    console.log("cached spotify key: ", cached);
-    return cached;
-  }
+var SpotifyWebApi = require('spotify-web-api-node');
 
-  //else let's go get our Token from the Spotify API
-  const url = "https://accounts.spotify.com/api/token";
-  const authorization = "Basic " + Buffer.from(SPOTIFY_CLIENT_ID + ":" + SPOTIFY_CLIENT_SECRET).toString('base64');
-  const options = {
-    method: "post",
-    contentType: "application/x-www-form-urlencoded",
-    payload: { "grant_type":"client_credentials" },
-    headers: { "Authorization": authorization },
-    muteHttpExceptions: true
-  };
-  let response = await fetch(url, options);
-  console.log("got spotify key from api call: " , response);
-  let json = response.json();
-  cache.set(cacheKey, json.access_token, 3000); // cache for 50 minutes.
-  return authorization;
-}
-
+// credentials are optional
+var spotifyApi = new SpotifyWebApi({
+  clientId: SPOTIFY_CLIENT_ID,
+  clientSecret: SPOTIFY_CLIENT_SECRET,
+  redirectUri: 'http://localhost:3000/spotify'
+});
 /**
  * Get's the first Spotify artistID for a given artist name
  *
@@ -41,9 +25,14 @@ async function getSpotifyToken_() {
  * @customfunction
  */
 
-exports.getSpotifyArtistId = async function(name) {
-  var access_token = await getSpotifyToken_();
-  console.log(access_token);
+exports.getSpotifyFeaturedPlaylists = async function(name) {
+  var authorization = await spotifyApi.clientCredentialsGrant();
+  await spotifyApi.setAccessToken(authorization.body['access_token']);
+  
+  var json = await spotifyApi.getFeaturedPlaylists({ limit : 3, offset: 1, country: 'US'});
+  var playlists = await json.playlists;
+  console.log(json.body.playlists);
+  return json.playlists;
 }
 
 module.exports = exports;
