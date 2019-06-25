@@ -8,17 +8,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/pandora', async (req, res) => {
-    data_layer.getNBSTopSpins().then((data) => {
-        console.log(data);
-        res.send(data);
-    });
+    const data = await data_layer.getNBSTopSpins();
+    res.send(data);
 });
 
-app.get('/spotify', (req, res) => {
-    data_layer.getSpotifyTopSpins().then((data) => {
-        console.log(data);
-        res.send(data)
-    });
+app.get('/spotify', async (req, res) => {
+    const data = await data_layer.getSpotifyTopStreams();
+    res.send(data);
 });
 
 app.get('/nightjob', (req, res) => {

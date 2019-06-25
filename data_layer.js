@@ -16,75 +16,17 @@ var csv = require('csv-parser');
 
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
 var exports = {};
-
-exports.nightJob = function() {
-  downloadSpotifyChart('top200', 'us', 'weekly', 'latest');
-  downloadSpotifyChart('top200', 'us', 'daily', 'latest');
-}
-/**
- * Get's the latest Spotify top spin charts
- * https://spotifycharts.com/regional
- * 
- * @return {Array} [track_name, artist_name]
- * @customfunction
- */
-exports.getSpotifyTopSpins = async function(country='us', freq='weekly', date='latest') {
-  const path = Path.resolve(__dirname, 'files', `${country}_${freq}_${date}.csv`);
-  const tracks = [];
-  const reader = Fs.createReadStream(path);
-  var i = 0;
-  var parser = reader.pipe(csv({headers:false}));
-
-  return new Promise((resolve, reject) => {
-    parser.on('data', (data) => {
-      if(i >= 2 ) {
-        tracks.push([parseInt(data[0]), data[1], data[2]]);
-      }
-      i++;
-    })
-    parser.on('end', () => resolve(tracks));
-  });
-}
-
-/**
- * Get's the latest Pandora top spin charts
- * https://www.nextbigsound.com/charts/trendsetters
- * 
- * @return {Array} [track_name, artist_name]
- * @customfunction
- */
-exports.getNBSTopSpins = async function() {
-  var tracks = [];
-  const url = `https://api.nextbigsound.com/charts/v2/2/releases/latest/appearances?access_token=${NBS_ACCESS_TOKEN}
-  &fields=*,items.*,items.artist.name,items.track.name,items.track.artists.items.id,items.track.artists.items.name`
-  
-  return new Promise((resolve, reject) => {
-    fetch(url, {}).then((res) => res.json()).then((json) => {
-      for(var i=0; i<json.size; i++) {
-        var item = json.items[i];
-        tracks.push([i+1, item.track.name, item.track.artists.items[0].name]);
-      }
-      resolve(tracks);
-    });
-  });
-}
-
-
 /**
  * Helpers
  */
 
 
  /**
- * Downloads csv file from a url and pipes the raw data into a file under the 
- * the "files" folder under the server's root directory. This function is only called during the night job
- * @param {String} url The url from which a file download is initiated
- * @customfunction
+ * Downloads a resource from a url and pipes the raw data into a file under the 
+ * the "static" folder under the server's root directory. This function is only called during the night job
  */
-async function downloadSpotifyChart(chart_type, country, daily_or_weekly, date_range) {
-  const chart = chart_type === 'top200' ? 'regional' : 'viral';
-  const url = 'https://spotifycharts.com/' + chart + '/' + country + '/' + daily_or_weekly + '/' + date_range + '/download';
-  const path = Path.resolve(__dirname, 'files', 'us_' + daily_or_weekly + '_latest.csv');
+async function downloadStatic(url, filename) {
+  const path = Path.resolve(__dirname, 'static', filename);
   const writer = Fs.createWriteStream(path);
   const response = await Axios({
     method: 'GET',
@@ -100,6 +42,106 @@ async function downloadSpotifyChart(chart_type, country, daily_or_weekly, date_r
     
     writer.on('error', err => {
       reject(err);
+    });
+  });
+}
+
+/**
+ * This function takes the "meta_artists.tsv" and maps it into an updated object that will be stored statically in the same folder.
+ */
+async function generateNBSArtistMap() {
+  const path = Path.resolve(__dirname, 'static', 'meta_artists.tsv');
+  const artists = {};
+  var reader = Fs.createReadStream(path).pipe(csv({
+    separator:'\t'
+  }));
+
+  return new Promise((resolve, reject) => {
+    reader.on('data', (data) => {
+      //TODO insert key : value, data['artist_id] : data['artist_name']
+    })
+  });
+}
+
+
+/**
+ * EXPORTED METHODS
+ */
+exports.nightJob = function() {
+  downloadStatic('https://spotifycharts.com/regional/us/weekly/latest/download', 'us_weekly_latest.csv');
+  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/ranked_ratios.tsv`, 'industry_report.tsv');
+  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv')
+  .then(() => generateNBSArtistMap());
+}
+
+
+/**
+ * Get's the latest Spotify top spin charts
+ * https://spotifycharts.com/regional
+ */
+exports.getSpotifyTopStreams = async function() {
+  const path = Path.resolve(__dirname, 'static', 'us_weekly_latest.csv');
+  const spotify_top200 = [];
+  var reader = Fs.createReadStream(path).pipe(csv({
+    skipLines: 1
+  }));
+
+  return new Promise((resolve, reject) => {
+    reader.on('data', (data) => {
+      spotify_top200.push([data['Track Name'], data['Artist'], parseInt(data['Streams'])]);
+    })
+    reader.on('end', () => {
+      spotify_top200.sort((a,b) => {
+        return b[2] - a[2];
+      })
+      resolve(spotify_top200);
+    });
+  });
+}
+
+/**
+ * Get's the latest Pandora top spin charts
+ * https://www.nextbigsound.com/charts/trendsetters
+ */
+exports.getNBSTopSpins = async function() {
+  const tracks = [];
+  const path = Path.resolve(__dirname, 'static', 'industry_report.tsv');
+  var reader = Fs.createReadStream(path).pipe(csv({
+    separator:'\t',
+    quote: ''
+  }));
+  return new Promise((resolve, reject) => {
+    reader.on('data', (data) => {
+      tracks.push([data['track_name'], data['artist_ids'], parseInt(data['short_value']) + parseInt(data['long_value']), data['day']]);
+    })
+    reader.on('end', () => {
+    // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
+    // January - 0, February - 1, etc.
+      var current_date = new Date();
+      var week_ago_date = new Date();
+      week_ago_date.setDate(current_date.getDate() - 7); //date 7 days ago
+
+      //first we filter out tracks that are within our 7 day date range
+      tracks.filter((a) => {
+        var parts = a[3].split('-');
+        var year = parseInt(parts[0]);
+        var month = parseInt(parts[1]);
+        var day = parseInt(parts[2]);
+        var d = new Date(year, month - 1, day);
+        if (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime()) {
+          return true
+        }
+        return false;
+      });
+      tracks.sort((a, b) => {
+        return b[2] - a[2];
+      });
+      tracks.forEach(element => {
+        //TODO finish generateNBSArtistMap() then load it and do a binary search on it
+        // const artists = JSON.parse(element[1]).map(getNBSArtistName);
+        // element[1] = artists;
+      });
+      resolve(tracks);
     });
   });
 }
