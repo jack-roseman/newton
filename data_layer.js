@@ -12,11 +12,15 @@ const Fs = require('fs');
 const Path = require('path');
 const Axios = require('axios');
 const fetch = require('node-fetch');
-const csv = require('csv-parser')
-const PANDORA_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
+var csv = require('csv-parser');
 
+const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
 var exports = {};
 
+exports.nightJob = function() {
+  downloadSpotifyChart('top200', 'us', 'weekly', 'latest');
+  downloadSpotifyChart('top200', 'us', 'daily', 'latest');
+}
 /**
  * Get's the latest Spotify top spin charts
  * https://spotifycharts.com/regional
@@ -24,13 +28,22 @@ var exports = {};
  * @return {Array} [track_name, artist_name]
  * @customfunction
  */
-exports.getSpotifyTopSpins = async function() {
-  const path = Path.resolve(__dirname, 'files', 'us_weekly_latest.csv');
+exports.getSpotifyTopSpins = async function(country='us', freq='weekly', date='latest') {
+  const path = Path.resolve(__dirname, 'files', `${country}_${freq}_${date}.csv`);
   const tracks = [];
-  Fs.createReadStream(path)
-  .pipe(csv())
-  .on('data', (data) => tracks.push([parseInt(data['Position']), data['Track Name'], data['Artist']]));
-  return tracks;
+  const reader = Fs.createReadStream(path);
+  var i = 0;
+  var parser = reader.pipe(csv({headers:false}));
+
+  return new Promise((resolve, reject) => {
+    parser.on('data', (data) => {
+      if(i >= 2 ) {
+        tracks.push([parseInt(data[0]), data[1], data[2]]);
+      }
+      i++;
+    })
+    parser.on('end', () => resolve(tracks));
+  });
 }
 
 /**
@@ -40,16 +53,20 @@ exports.getSpotifyTopSpins = async function() {
  * @return {Array} [track_name, artist_name]
  * @customfunction
  */
-exports.getPandoraTopSpins = async function() {
-  const url = "https://api.nextbigsound.com/charts/v2/2/releases/latest/appearances?access_token=" + PANDORA_ACCESS_TOKEN + "&exclude=items.chart,items.release,items.curationAppearance,items.nextNewerAppearance&excludeSelf=true&fields=*,items.*,items.artist.id,items.playlinks,items.artist.name,items.artist.scores,items.track.id,items.track.name,items.track.artists.items.id,items.track.artists.items.name,items.track.artists.items.scores,items.nextOlderAppearance.rank,items.nextOlderAppearance.publishedAt&limit=100&offset=0"
-  const response = await fetch(url, {});
-  const json = await response.json();
+exports.getNBSTopSpins = async function() {
   var tracks = [];
-  for(var i=0; i<json.size; i++) {
-    var item = json.items[i];
-    tracks.push([i+1, item.track.name, item.track.artists.items[0].name]);
-  }
-  return tracks;
+  const url = `https://api.nextbigsound.com/charts/v2/2/releases/latest/appearances?access_token=${NBS_ACCESS_TOKEN}
+  &fields=*,items.*,items.artist.name,items.track.name,items.track.artists.items.id,items.track.artists.items.name`
+  
+  return new Promise((resolve, reject) => {
+    fetch(url, {}).then((res) => res.json()).then((json) => {
+      for(var i=0; i<json.size; i++) {
+        var item = json.items[i];
+        tracks.push([i+1, item.track.name, item.track.artists.items[0].name]);
+      }
+      resolve(tracks);
+    });
+  });
 }
 
 
@@ -76,12 +93,11 @@ async function downloadSpotifyChart(chart_type, country, daily_or_weekly, date_r
   });
 
   response.data.pipe(writer);
-
   return new Promise((resolve, reject) => {
     writer.on('end', () => {
       resolve();
     });
-
+    
     writer.on('error', err => {
       reject(err);
     });

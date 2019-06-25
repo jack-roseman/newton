@@ -8,14 +8,21 @@ app.get('/', (req, res) => {
 });
 
 app.get('/pandora', async (req, res) => {
-    const top_spins = await data_layer.getPandoraTopSpins();
-    res.send(top_spins);
+    data_layer.getNBSTopSpins().then((data) => {
+        console.log(data);
+        res.send(data);
+    });
 });
 
-app.get('/spotify', async (req, res) => {
-    const top_spins = await data_layer.getSpotifyTopSpins();
-    console.log(top_spins);
-    res.send(top_spins);
+app.get('/spotify', (req, res) => {
+    data_layer.getSpotifyTopSpins().then((data) => {
+        console.log(data);
+        res.send(data)
+    });
 });
 
+app.get('/nightjob', (req, res) => {
+    data_layer.nightJob();
+    res.send();
+});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
