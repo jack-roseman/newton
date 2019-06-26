@@ -15,7 +15,9 @@ var csv = require('csv-parser');
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
 
 const storage = require('node-persist');
-
+storage.init({
+  dir: Path.resolve(__dirname, '.node-persist')
+});
 
 var exports = {};
 /**
@@ -55,26 +57,6 @@ async function downloadStatic(url, filename) {
  * This function takes the "meta_artists.tsv" and maps it into an updated object that will be stored statically in the same folder.
  */
 exports.generateNBSArtistMap = async function() {
-  await storage.init({
-    dir: '/',
- 
-    stringify: JSON.stringify,
- 
-    parse: JSON.parse,
- 
-    encoding: 'utf8',
- 
-    logging: false,  // can also be custom logging function
- 
-    ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS or a valid Javascript Date object
- 
-    expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
- 
-    // in some cases, you (or some other service) might add non-valid storage files to your
-    // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
-    forgiveParseErrors: false
- 
-});
   const path = Path.resolve(__dirname, 'static', 'meta_artists.tsv');
   var reader = Fs.createReadStream(path).pipe(csv({
     separator:'\t'
@@ -166,14 +148,10 @@ exports.getNBSTopSpins = async function() {
         return b[2] - a[2];
       });
       tracks.forEach(element => {
-        //TODO finish generateNBSArtistMap() then load it and do a binary search on it
-        // const artists = JSON.parse(element[1])
-        // element[1] = artists;
-        JSON.parse(element[1]).map(async (id) => {
-          const lookup = '' + id;
-          var val = await storage.getItem(lookup);
-          console.log(val);
-        });
+
+        var artists = JSON.parse(element[1]);
+        artists.map(async (id) => await storage.getItem(`${id}`));
+        //TODO Figure out the rest of this mapping
       });
       resolve(tracks);
     });
