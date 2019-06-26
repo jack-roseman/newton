@@ -11,10 +11,12 @@
 const Fs = require('fs');
 const Path = require('path');
 const Axios = require('axios');
-const fetch = require('node-fetch');
 var csv = require('csv-parser');
-
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
+
+const storage = require('node-persist');
+
+
 var exports = {};
 /**
  * Helpers
@@ -35,12 +37,15 @@ async function downloadStatic(url, filename) {
   });
 
   response.data.pipe(writer);
+
   return new Promise((resolve, reject) => {
     writer.on('end', () => {
+      console.log("Resource Downloaded");
       resolve();
     });
     
     writer.on('error', err => {
+      console.log("ERROR");
       reject(err);
     });
   });
@@ -49,17 +54,40 @@ async function downloadStatic(url, filename) {
 /**
  * This function takes the "meta_artists.tsv" and maps it into an updated object that will be stored statically in the same folder.
  */
-async function generateNBSArtistMap() {
+exports.generateNBSArtistMap = async function() {
+  await storage.init({
+    dir: '/',
+ 
+    stringify: JSON.stringify,
+ 
+    parse: JSON.parse,
+ 
+    encoding: 'utf8',
+ 
+    logging: false,  // can also be custom logging function
+ 
+    ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS or a valid Javascript Date object
+ 
+    expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
+ 
+    // in some cases, you (or some other service) might add non-valid storage files to your
+    // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
+    forgiveParseErrors: false
+ 
+});
   const path = Path.resolve(__dirname, 'static', 'meta_artists.tsv');
-  const artists = {};
   var reader = Fs.createReadStream(path).pipe(csv({
     separator:'\t'
   }));
-
+  
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
-      //TODO insert key : value, data['artist_id] : data['artist_name']
-    })
+      storage.setItem(data['artist_id'], data['artist_name']);
+    });
+
+    reader.on('end', () => {
+      resolve();
+    });
   });
 }
 
@@ -67,11 +95,10 @@ async function generateNBSArtistMap() {
 /**
  * EXPORTED METHODS
  */
-exports.nightJob = function() {
+exports.nightJob = async function() {
   downloadStatic('https://spotifycharts.com/regional/us/weekly/latest/download', 'us_weekly_latest.csv');
   downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/ranked_ratios.tsv`, 'industry_report.tsv');
-  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv')
-  .then(() => generateNBSArtistMap());
+  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv');
 }
 
 
@@ -89,7 +116,8 @@ exports.getSpotifyTopStreams = async function() {
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
       spotify_top200.push([data['Track Name'], data['Artist'], parseInt(data['Streams'])]);
-    })
+    });
+
     reader.on('end', () => {
       spotify_top200.sort((a,b) => {
         return b[2] - a[2];
@@ -110,10 +138,11 @@ exports.getNBSTopSpins = async function() {
     separator:'\t',
     quote: ''
   }));
+
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
       tracks.push([data['track_name'], data['artist_ids'], parseInt(data['short_value']) + parseInt(data['long_value']), data['day']]);
-    })
+    });
     reader.on('end', () => {
     // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
     // January - 0, February - 1, etc.
@@ -138,8 +167,13 @@ exports.getNBSTopSpins = async function() {
       });
       tracks.forEach(element => {
         //TODO finish generateNBSArtistMap() then load it and do a binary search on it
-        // const artists = JSON.parse(element[1]).map(getNBSArtistName);
+        // const artists = JSON.parse(element[1])
         // element[1] = artists;
+        JSON.parse(element[1]).map(async (id) => {
+          const lookup = '' + id;
+          var val = await storage.getItem(lookup);
+          console.log(val);
+        });
       });
       resolve(tracks);
     });

@@ -17,6 +17,7 @@ artist_id	artist_name
 2702049	We The Kings
 2702061	Wiz Khalifa
 2702099	Kevin Gates
+2702300	Randy Travis
 2702846	The Goo Goo Dolls
 2703065	Linkin Park
 2704360	Ben E. King
@@ -35,6 +36,7 @@ artist_id	artist_name
 2709556	Jason Mraz
 2710310	Nickelback
 2710412	Keith Sweat
+2711088	Third Eye Blind
 2711166	Prince
 2711234	Waka Flocka Flame
 2711236	Gucci Mane
@@ -122,6 +124,7 @@ artist_id	artist_name
 3042811	YFN Lucci
 3043533	Marshmello
 3051378	Nipsey Hussle
+3080504	Godsmack
 3379279	Vybz Kartel
 3399259	Lady Gaga
 3401958	Kanye West
@@ -209,7 +212,6 @@ artist_id	artist_name
 3446422	Keith Urban
 3446469	Jimmy Eat World
 3447089	Commodores
-3447152	Travis Barker
 3447249	Cat Stevens
 3447339	John Fogerty
 3447478	Justin Moore
@@ -333,6 +335,7 @@ artist_id	artist_name
 3902535	Swae Lee
 3914967	Timmy Trumpet
 3971322	Opetaia Foa'i
+3979054	The Verve
 3986815	KIDZ BOP Kids
 3992874	Tom Petty And The Heartbreakers
 4049714	SHAED
@@ -340,7 +343,6 @@ artist_id	artist_name
 4094603	Bishop Briggs
 4117600	Offset
 4147839	blackbear
-4188884	The Lumineers
 4223727	Calum Scott
 4224338	ZAYN
 4227991	I Prevail
@@ -352,6 +354,7 @@ artist_id	artist_name
 4322834	Gucci Mane
 4323739	Rich The Kid
 4324534	Quavo
+4325140	K CAMP
 4325447	Kodak Black
 4327095	Jacquees
 4327656	PnB Rock
@@ -436,7 +439,6 @@ artist_id	artist_name
 4354506	Ram Jam
 4354926	Incubus
 4356465	Jimmy Buffett
-4357158	Kygo
 4358551	OMI
 4359487	Looking Glass
 4360193	Van Morrison
@@ -486,7 +488,6 @@ artist_id	artist_name
 4766586	Mitchell Tenpenny
 4766885	Dua Lipa
 4771848	Sam Cooke
-5541956	Pepper
 5559319	Ying Yang Twins
 5602039	Kenny Chesney
 5603354	Twista
@@ -522,13 +523,13 @@ artist_id	artist_name
 7443080	Ella Mai
 7467751	Captain Cuts
 7493861	Tainy
-7499541	Midland
 7502022	Luke Combs
 7546013	KYLE
 7546705	Offset
 7572937	YoungBoy Never Broke Again
 7613325	Ruth B.
 7672420	Billie Eilish
+7673915	Lindsay Ell
 7687573	Metallica
 7691137	Olivia Foa'i
 7691138	Vai Mahina
@@ -536,6 +537,7 @@ artist_id	artist_name
 7691140	Matthew Ineleo
 7691144	Dwayne Johnson
 7691145	Talaga Steve Sale
+7732552	Elitsa Alexandrova
 7736492	Mumford & Sons
 7750062	Marshmello
 7750349	Smiley
@@ -550,7 +552,6 @@ artist_id	artist_name
 8084347	ReMix Reek
 8102343	NOTD
 8102362	Casper Magico
-8151184	Tee Grizzley
 8316531	Christian Nodal
 8373469	Bad Bunny
 8396999	Black Caviar
@@ -586,7 +587,6 @@ artist_id	artist_name
 11259944	Lil Baby
 11259983	Gunna
 11270493	Bhad Bhabie
-11332142	YUNGBLUD
 11386368	Cardi B
 11404171	Au/Ra
 11414806	Y2K
@@ -595,7 +595,6 @@ artist_id	artist_name
 11541190	Lil Pump
 11560267	Everlast
 11560404	Coolio
-11569181	Jimmie Allen
 11651375	YNW Melly
 11721441	Bad Wolves
 11761204	The Greatest Showman Ensemble
@@ -616,6 +615,7 @@ artist_id	artist_name
 12159468	Blackway
 12200021	XXXTENTACION
 12227133	Alina Baraz
+12239043	Anna Clendening
 12303875	Freddie Dredd
 12318805	Mustard
 12413674	Sheck Wes
@@ -641,7 +641,6 @@ artist_id	artist_name
 13223995	DaBaby
 13268631	Queen Naija
 13284722	Normani
-13443659	Beau Young Prince
 13451152	flora cash
 13487227	benny blanco
 13508755	Fuerza Regida
@@ -680,5 +679,8 @@ artist_id	artist_name
 16119426	Zhavia Ward
 16119681	Ambjaay
 16272015	Mena Massoud
+16421546	Víctor Cárdenas
+16475091	Dayvi
 16493234	Marshmello
 16500381	Adam Calhoun featuring Katie Noel
+16709868	5 Seconds of Summer
