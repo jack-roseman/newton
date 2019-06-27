@@ -14,11 +14,10 @@ const Axios = require('axios');
 var csv = require('csv-parser');
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
 
-const storage = require('node-persist');
-storage.init({
-  dir: Path.resolve(__dirname, '.node-persist')
+const artists = require('node-persist');
+artists.init({
+  dir: Path.resolve(__dirname, '.node-persist/artists')
 });
-
 var exports = {};
 /**
  * Helpers
@@ -27,7 +26,8 @@ var exports = {};
 
  /**
  * Downloads a resource from a url and pipes the raw data into a file under the 
- * the "static" folder under the server's root directory. This function is only called during the night job
+ * the "static" folder under the server's root directory. 
+ * This function is only called during the night job.
  */
 async function downloadStatic(url, filename) {
   const path = Path.resolve(__dirname, 'static', filename);
@@ -54,17 +54,17 @@ async function downloadStatic(url, filename) {
 }
 
 /**
- * This function takes the "meta_artists.tsv" and maps it into an updated object that will be stored statically in the same folder.
+ * This function takes the "meta_artists.tsv" and maps it into an updated object that will be stored in the database.
  */
-exports.generateNBSArtistMap = async function() {
+exports.generateNBSArtistMap = function() {
   const path = Path.resolve(__dirname, 'static', 'meta_artists.tsv');
   var reader = Fs.createReadStream(path).pipe(csv({
     separator:'\t'
   }));
-  
+
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
-      storage.setItem(data['artist_id'], data['artist_name']);
+      artists.setItem(data['artist_id'], data['artist_name'], );
     });
 
     reader.on('end', () => {
@@ -77,10 +77,13 @@ exports.generateNBSArtistMap = async function() {
 /**
  * EXPORTED METHODS
  */
-exports.nightJob = async function() {
-  downloadStatic('https://spotifycharts.com/regional/us/weekly/latest/download', 'us_weekly_latest.csv');
-  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/ranked_ratios.tsv`, 'industry_report.tsv');
-  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv');
+exports.downloadStaticFiles = async function() {
+  downloadStatic('https://spotifycharts.com/regional/us/weekly/latest/download', 'us_weekly_latest.csv')
+  .then(console.log("Static file downloaded"));
+  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/ranked_ratios.tsv`, 'industry_report.tsv')
+  .then(console.log("Static file downloaded"));
+  downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv')
+  .then(console.log("Static file downloaded"));
 }
 
 
@@ -102,9 +105,14 @@ exports.getSpotifyTopStreams = async function() {
 
     reader.on('end', () => {
       spotify_top200.sort((a,b) => {
+        resolve(spotify_top200);
         return b[2] - a[2];
       })
-      resolve(spotify_top200);
+    });
+
+    reader.on('error', (err) => {
+      console.error(err);
+      reject();
     });
   });
 }
@@ -125,6 +133,12 @@ exports.getNBSTopSpins = async function() {
     reader.on('data', (data) => {
       tracks.push([data['track_name'], data['artist_ids'], parseInt(data['short_value']) + parseInt(data['long_value']), data['day']]);
     });
+
+    reader.on('error', (err) => {
+      console.error(err);
+      reject();
+    });
+
     reader.on('end', () => {
     // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
     // January - 0, February - 1, etc.
@@ -132,7 +146,7 @@ exports.getNBSTopSpins = async function() {
       var week_ago_date = new Date();
       week_ago_date.setDate(current_date.getDate() - 7); //date 7 days ago
 
-      //first we filter out tracks that are within our 7 day date range
+      //first we filter out tracks that are out of date
       tracks.filter((a) => {
         var parts = a[3].split('-');
         var year = parseInt(parts[0]);
@@ -144,16 +158,20 @@ exports.getNBSTopSpins = async function() {
         }
         return false;
       });
+
+      //sort in descending order
       tracks.sort((a, b) => {
         return b[2] - a[2];
       });
-      tracks.forEach(element => {
 
-        var artists = JSON.parse(element[1]);
-        artists.map(async (id) => await storage.getItem(`${id}`));
-        //TODO Figure out the rest of this mapping
+      tracks.forEach(async (element) => {
+        var artist_ids = JSON.parse(element[1]);
+        artist_ids.map(async (id) => {
+          artists.getItem(`${id}`);
+        });
       });
-      resolve(tracks);
+      
+      resolve(tracks); 
     });
   });
 }

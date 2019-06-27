@@ -12,18 +12,14 @@ app.get('/pandora', async (req, res) => {
     res.send(data);
 });
 
-app.get('/tree', async (req, res) => {
-    const data = await data_layer.generateNBSArtistMap();
-    res.send(data);
-});
-
 app.get('/spotify', async (req, res) => {
     const data = await data_layer.getSpotifyTopStreams();
     res.send(data);
 });
 
-app.get('/nightjob', (req, res) => {
-    data_layer.nightJob();
+app.get('/nightjob', async (req, res) => {
+    await data_layer.downloadStaticFiles()
+    .then(data_layer.generateNBSArtistMap());
     res.send("Night Job Complete");
 });
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
