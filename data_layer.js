@@ -13,15 +13,73 @@ const Path = require('path');
 const Axios = require('axios');
 var csv = require('csv-parser');
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
+const SPOTIFY_CLIENT_ID = 'f530b38104e943b4baa08387593feeaf';
+const SPOTIFY_CLIENT_SECRET = '6983abfc942944da8953282c430c2c85';
+
+var SpotifyWebApi = require('spotify-web-api-node');
+ 
+// credentials are optional
+var spotifyApi = new SpotifyWebApi({
+  clientId: SPOTIFY_CLIENT_ID,
+  clientSecret: SPOTIFY_CLIENT_SECRET
+});
+
+async function getSpotifyToken_() {
+  //we want to use the cache here so we're not constantly fetching the auth token
+  var cached = spotifyApi.getAccessToken();
+  if (cached != null) {
+    console.log('The access token is ' + cached);
+    return cached;
+  }
+  
+  await spotifyApi.clientCredentialsGrant().then(
+    function(data) {
+      console.log('The access token expires in ' + data.body['expires_in']);
+      console.log('The access token is ' + data.body['access_token']);
+   
+      // Save the access token so that it's used in future calls
+      spotifyApi.setAccessToken(data.body['access_token']);
+    },
+    function(err) {
+      console.log('Something went wrong when retrieving an access token', err);
+    }
+  );
+  return spotifyApi.getAccessToken();
+}
 
 const artists = require('node-persist');
+const spotify = require('node-persist');
+
 artists.init({
   dir: Path.resolve(__dirname, '.node-persist/artists')
 });
+
+spotify.init({
+  dir: Path.resolve(__dirname, '.node-persist/spotify')
+});
+
+
 var exports = {};
 /**
  * Helpers
  */
+
+exports.getSpotifyFeatured = async function() {
+  await getSpotifyToken_();
+  const featured = await spotifyApi.getFeaturedPlaylists();
+  const playlists = [];
+  featured.body.playlists.items.forEach(async (p_list) => {
+    var x_tracks = await spotifyApi.getPlaylistTracks(p_list.id);
+    var x_tracks_ids = x_tracks.body.items.map((el) => el.track.id);
+    var playlist = {
+      service: 'Spotify',
+      name: p_list.name,
+      tracks: x_tracks_ids
+    }
+    playlists.push(playlist);
+  });
+  return playlists;
+}
 
 
  /**
@@ -100,6 +158,7 @@ exports.getSpotifyTopStreams = async function() {
 
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
+      console.log(data);
       spotify_top200.push([data['Track Name'], data['Artist'], parseInt(data['Streams'])]);
     });
 
