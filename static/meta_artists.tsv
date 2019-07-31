@@ -1,8 +1,9 @@
 artist_id	artist_name
+27901	The Zombies
 138456	Oasis
+249239	Ozuna
 434231	Downer
 1226151	Daddy Yankee
-1270486	Pink
 1558373	Isaac Shepard
 1618270	Journey
 2583116	Dylan Scott
@@ -10,25 +11,26 @@ artist_id	artist_name
 2583936	Tim McGraw
 2586884	Tim McGraw featuring Faith Hill
 2588132	Los Tucanes De Tijuana
+2686553	Gucci Mane
 2701813	Fleetwood Mac
 2701946	Flo Rida
-2701956	David Guetta
 2702046	Passenger
 2702049	We The Kings
 2702061	Wiz Khalifa
 2702099	Kevin Gates
 2702300	Randy Travis
-2702846	The Goo Goo Dolls
 2703065	Linkin Park
 2704360	Ben E. King
 2704478	The Doobie Brothers
 2704779	Trey Songz
 2705201	Buffalo Springfield
-2706151	Kid Rock
 2706158	Uncle Kracker
 2706220	Bruno Mars
+2706408	Wale
+2706852	America
 2706870	Otis Redding
 2707130	Disturbed
+2707970	The Black Keys
 2708140	James Taylor
 2708200	Eagles
 2708369	Coldplay
@@ -37,13 +39,11 @@ artist_id	artist_name
 2710310	Nickelback
 2710412	Keith Sweat
 2711088	Third Eye Blind
-2711166	Prince
 2711234	Waka Flocka Flame
 2711236	Gucci Mane
 2711238	Meek Mill
 2711330	Andy Grammer
 2712084	Blake Shelton
-2712151	Twista
 2712755	a-ha
 2712831	Ty Dolla $ign
 2713581	Van Halen
@@ -58,29 +58,27 @@ artist_id	artist_name
 2719221	Staind
 2719230	Theory Of A Deadman
 2719243	Skillet
-2719805	Justin Bieber
 2721730	Björn Skifs
 2724272	Fabolous
+2724864	Biz Markie
 2727601	Bebe Rexha
-2727659	Clean Bandit
 2727909	Whitesnake
 2728276	Chris Janson
 2729031	The Hollies
 2731107	Led Zeppelin
-2733185	Diddy
 2733202	The Notorious B.I.G.
+2734434	Michael Ray
 2738521	Mac Miller
 2739749	Edwin McCain
 2740566	Tom Petty
-2743030	Brett Eldredge
 2744075	Migos
 2744333	Dan + Shay
+2744923	Toto
 2745181	Young Thug
-2749465	Trapt
 2752434	Vance Joy
-2760905	Panic! At The Disco
 2761139	Michelle Williams
 2761169	Lukas Graham
+2762380	Sanna Nielsen
 2764290	Dustin Lynch
 2764883	AJR
 2765558	Christina Perri
@@ -88,11 +86,9 @@ artist_id	artist_name
 2773220	Nitty Gritty Dirt Band
 2776420	Candlebox
 2778240	Black Sabbath
-2779444	PARTYNEXTDOOR
 2788421	Colbie Caillat
 2792039	Lizzo
 2815032	twenty one pilots
-2816832	Sleeping At Last
 2819747	Ciara
 2820548	Zac Brown Band
 2820573	Kenny Chesney
@@ -105,7 +101,6 @@ artist_id	artist_name
 2918759	Fort Minor
 2929465	Morgan Evans
 2932234	Cupid
-2946555	Charlie Puth
 2946657	Anne-Marie
 2948711	PnB Rock
 2950531	Lil Dicky
@@ -113,36 +108,28 @@ artist_id	artist_name
 2957036	Kehlani
 2974920	Kodak Black
 2987004	Dua Lipa
-2987447	Twenty One Pilots
-3020449	Anthony Ramos
-3020450	Daveed Diggs
-3020451	Okieriete Onaodowan
-3020452	Lin-Manuel Miranda
-3020454	Phillipa Soo
-3020455	Original Broadway Cast of Hamilton
 3041596	Lil Uzi Vert
 3042811	YFN Lucci
 3043533	Marshmello
 3051378	Nipsey Hussle
 3080504	Godsmack
-3379279	Vybz Kartel
 3399259	Lady Gaga
+3399932	Dove Cameron
 3401958	Kanye West
 3402849	Ice Cube
 3407015	Louis Armstrong
 3407641	Disclosure
 3407643	Sam Smith
-3408159	Tory Lanez
 3409210	Neil Diamond
 3409634	5 Seconds Of Summer
 3411651	Drake
 3412178	Mariah Carey
 3412504	Marvin Gaye
 3413190	Eric Clapton
-3413754	Tyga
 3415143	Eminem
 3416184	Maddie & Tae
 3420355	Demi Lovato
+3421518	Justin Bieber
 3421857	Ellie Goulding
 3424379	Rihanna
 3424400	J. Cole
@@ -157,9 +144,12 @@ artist_id	artist_name
 3426760	The Black Eyed Peas
 3428711	Rob Zombie
 3429095	Simple Minds
+3430852	50 Cent
 3430857	Jeremih
+3434091	Lorde
 3435041	Queen
 3435308	Cam'Ron
+3435448	Donald Glover
 3435988	The All-American Rejects
 3437005	David Bowie
 3437870	2 Chainz
@@ -168,7 +158,6 @@ artist_id	artist_name
 3438018	Ariana Grande
 3438251	Steve Miller Band
 3438329	Maroon 5
-3438338	Jessie J
 3438339	Nicki Minaj
 3438348	Fall Out Boy
 3438353	Katy Perry
@@ -183,15 +172,14 @@ artist_id	artist_name
 3440090	Alessia Cara
 3440251	Don Omar
 3440351	YG
+3440626	Beyoncé
 3441228	Elton John
-3441261	Lana Del Rey
 3441334	Rascal Flatts
 3441540	Toby Keith
 3441950	Joseph Williams
 3442173	Imagine Dragons
 3442244	Hailee Steinfeld
 3443051	Tears For Fears
-3443141	Felix Jaehn
 3443144	The Weeknd
 3443253	Guns N' Roses
 3443808	Jason Weaver
@@ -199,8 +187,6 @@ artist_id	artist_name
 3444423	J. Balvin
 3444720	Daddy Yankee
 3444948	Shawn Mendes
-3445028	David Lee Murphy
-3445188	Ester Dean
 3445228	Leona Lewis
 3445422	Darius Rucker
 3445425	Hinder
@@ -211,7 +197,7 @@ artist_id	artist_name
 3446412	Lady Antebellum
 3446422	Keith Urban
 3446469	Jimmy Eat World
-3447089	Commodores
+3447152	Travis Barker
 3447249	Cat Stevens
 3447339	John Fogerty
 3447478	Justin Moore
@@ -219,23 +205,24 @@ artist_id	artist_name
 3447821	Snow Patrol
 3447946	Lynyrd Skynyrd
 3448018	CHVRCHES
+3449454	Easton Corbin
+3449806	Sia
 3450391	Owl City
 3450404	Jackson 5
 3450795	Nelly
 3450860	3 Doors Down
-3451163	Timbaland
 3451276	Chris Stapleton
 3451409	Idina Menzel
 3451493	Bryan Adams
 3451902	Creedence Clearwater Revival
 3452178	Thomas Rhett
 3452273	Sublime
+3452513	Papa Roach
+3452536	E-40
 3453019	Bon Jovi
 3453106	Luke Bryan
-3453398	Chris Brown
 3454577	Josh Turner
 3454891	Halsey
-3455131	Don Henley
 3455334	Will Smith
 3455503	Weezer
 3455564	ABBA
@@ -246,11 +233,9 @@ artist_id	artist_name
 3457585	The Beatles
 3457892	Bastille
 3458634	Scorpions
-3458641	The Band
 3459234	Brothers Osborne
 3460040	Brett Young
 3460105	Naomi Scott
-3460440	Boyz II Men
 3460605	Four Tops
 3460869	George Strait
 3462477	Dierks Bentley
@@ -260,6 +245,9 @@ artist_id	artist_name
 3496589	Tammi Terrell
 3496801	Lifehouse
 3496858	Tonic
+3497178	Booboo Stewart
+3497181	Cameron Boyce
+3497182	Sofia Carson
 3497269	Kendrick Lamar
 3497705	Rae Sremmurd
 3497753	Donny Osmond
@@ -268,22 +256,28 @@ artist_id	artist_name
 3499143	Jacquees
 3499574	The Rolling Stones
 3499617	DJ Snake
-3499968	Salt-N-Pepa
+3500288	Etta James
 3501723	2Pac
+3501888	Little Big Town
 3502192	The Righteous Brothers
-3503368	Blind Melon
+3503311	Free
 3503370	Semisonic
 3503728	Angela Lansbury
-3504321	Vic Mensa
+3504622	Lebo M.
 3504624	Laura Williams
 3504625	Rowan Atkinson
+3504627	Jim Cummings
+3504628	Cheech Marin
+3504629	Jeremy Irons
+3504630	Whoopi Goldberg
 3504632	Ernie Sabella
 3504633	Nathan Lane
+3504635	Kristle Edwards
+3504636	Sally Dworsky
 3504859	Logic
-3505368	Blackstreet
 3506662	NF
+3506870	Soft Cell
 3508653	Jonas Brothers
-3508884	Cast
 3508910	Stealers Wheel
 3508953	Camila Cabello
 3509505	Lea Salonga
@@ -294,15 +288,14 @@ artist_id	artist_name
 3514398	The Wallflowers
 3515012	Willy William
 3517014	The Police
+3520056	Gotye
 3520182	Jon Pardi
 3520205	Dean Lewis
 3523808	Maren Morris
 3530007	Evanescence
-3530832	Niall Horan
 3530855	Liam Payne
 3533108	Brad Kane
 3533119	Mandy Moore
-3533122	Zachary Levi
 3533656	Jamey Johnson
 3533813	Desiigner
 3534573	Bee Gees
@@ -310,9 +303,7 @@ artist_id	artist_name
 3537355	Bob Seger & The Silver Bullet Band
 3542008	The Offspring
 3544437	Banda Los Sebastianes
-3546694	Jonas Blue
 3555486	Carly Pearce
-3563271	Savage
 3564202	Grey
 3588355	The xx
 3631778	Jhené Aiko
@@ -333,40 +324,36 @@ artist_id	artist_name
 3889337	Norman Greenbaum
 3895850	The Hollies
 3902535	Swae Lee
-3914967	Timmy Trumpet
+3967239	DJ Khalil
 3971322	Opetaia Foa'i
 3979054	The Verve
-3986815	KIDZ BOP Kids
 3992874	Tom Petty And The Heartbreakers
 4049714	SHAED
-4049906	Cardi B
 4094603	Bishop Briggs
 4117600	Offset
 4147839	blackbear
+4188884	The Lumineers
 4223727	Calum Scott
-4224338	ZAYN
-4227991	I Prevail
 4228486	Los Ángeles Azules
 4239840	Bad Bunny
 4242587	Hugh Jackman
 4263052	Bradley Cooper
 4322471	Tyga
+4322733	Young Dolph
 4322834	Gucci Mane
 4323739	Rich The Kid
 4324534	Quavo
-4325140	K CAMP
-4325447	Kodak Black
-4327095	Jacquees
-4327656	PnB Rock
+4325172	Iggy Azalea
 4330856	Dirty Heads
-4331156	Mötley Crüe
 4334372	Yella Beezy
+4334867	Wisin
 4334957	P!nk
 4334985	Maluma
-4335045	Alicia Keys
+4335136	Rick Ross
 4335203	Future
 4335209	Martin Garrix
 4335210	Bebe Rexha
+4335235	KONGOS
 4335361	Britney Spears
 4335532	Alan Walker
 4335537	Marshmello
@@ -377,33 +364,29 @@ artist_id	artist_name
 4337058	The Chainsmokers
 4337177	G-Eazy
 4337392	Beyoncé
-4337438	Kirk Franklin
 4337773	Justin Timberlake
 4337980	Mark Ronson
-4338029	Kelly Clarkson
 4338294	Pitbull
 4338481	Farruko
 4338605	Miguel
+4338958	Miranda Lambert
 4339418	Rob $tone
 4339448	Diplo
-4339452	5 Seconds of Summer
 4339490	Nicky Jam
 4339593	Meghan Trainor
 4339640	Sean Kingston
-4340742	DJ Jazzy Jeff & The Fresh Prince
 4340860	Bill Withers
-4341032	WALK THE MOON
 4341528	Eddie Money
+4342164	Ozzy Osbourne
+4342430	Jake Owen
 4342555	MNEK
 4342960	Coldplay
 4343799	Kane Brown
 4343941	Calvin Harris
 4344239	Yo Gotti
 4344504	Fall Out Boy
-4344742	Eve 6
 4344814	Brad Paisley
 4344857	Alan Jackson
-4344921	Eagle-Eye Cherry
 4345030	TLC
 4345180	Metro Boomin
 4345815	Cyndi Lauper
@@ -419,13 +402,14 @@ artist_id	artist_name
 4348648	Russ
 4349354	Adele
 4349512	Travis Scott
-4349731	Sia
 4350361	Usher
 4350667	DJ Khaled
+4350746	Mariah Carey
 4350752	Daryl Hall & John Oates
 4351300	Tomine Harket
 4351979	Romeo Santos
 4352186	Pedro Capó
+4352396	Kendrick Lamar
 4352398	J. Cole
 4352399	Bryson Tiller
 4352684	Earth, Wind & Fire
@@ -434,27 +418,27 @@ artist_id	artist_name
 4353244	Quinn XCII
 4353258	Journey
 4353358	Boston
-4353368	The Calling
 4353734	Halsey
 4354506	Ram Jam
+4354566	The Charlie Daniels Band
 4354926	Incubus
 4356465	Jimmy Buffett
+4357158	Kygo
 4358551	OMI
 4359487	Looking Glass
 4360193	Van Morrison
 4360988	Macklemore
 4361078	The Fray
 4361721	Billy Joel
-4362079	Jagged Edge
-4362634	Ro James
-4363147	Joe
 4363155	Ginuwine
 4363326	Ozuna
-4363398	Joan Jett & The Blackhearts
 4364055	Three Days Grace
 4365362	Mario
 4366088	Chris Young
+4366309	Hozier
 4366859	Train
+4367238	Pink Floyd
+4369411	OutKast
 4369585	The Script
 4369773	Tim McGraw
 4370056	Cage The Elephant
@@ -464,12 +448,13 @@ artist_id	artist_name
 4373922	Gwen Stefani
 4373959	Backstreet Boys
 4373969	Franz Ferdinand
-4374018	Five for Fighting
+4375424	Redbone
 4380900	Eurythmics
 4384514	Wisin & Yandel
 4384829	Lecrae
 4386620	Foster The People
 4387018	Billy Ray Cyrus
+4390778	Tiwa Savage
 4396795	Jon B
 4418421	Chord Overstreet
 4424911	Karol G
@@ -477,36 +462,34 @@ artist_id	artist_name
 4551774	Khalid
 4700769	Tyler, The Creator
 4713544	Aminé
+4714149	Major Lazer
 4714178	Miley Cyrus
-4715662	Kat Dahlia
 4725846	James Arthur
 4737029	Doja Cat
 4738097	Zooey Deschanel
 4739135	Alex & Sierra
 4742379	Zara Larsson
 4750449	Old Dominion
+4760940	WizKid
 4766586	Mitchell Tenpenny
-4766885	Dua Lipa
 4771848	Sam Cooke
 5559319	Ying Yang Twins
-5602039	Kenny Chesney
-5603354	Twista
+5571744	Daddy Yankee
 5611592	Al Green
-5618025	Trina
 5648750	AWOLNATION
 5659229	Natti Natasha
-5675806	DJ Luian
+5691774	La Maquinaria Norteña
 5759406	Norman Greenbaum
+5790367	Karol G
 5822218	King Harvest
 5903863	Ozuna
-5954288	David Lee Murphy
 5993800	Lil Jon & The East Side Boyz
-6012024	Kelsea Ballerini
 6088052	Edwin Luna y La Trakalosa de Monterrey
 6176835	Romeo Santos
 6184707	Russell Dickerson
 6236394	Israel Kamakawiwo'ole
 6746539	Scotty McCreery
+6758976	Walker Hayes
 6765922	Aino Jawo
 6765923	Caroline Hjelt
 6778823	Anna Kendrick
@@ -521,7 +504,6 @@ artist_id	artist_name
 6923550	Christopher Mintz-Plasse
 7432812	Metro Boomin
 7443080	Ella Mai
-7467751	Captain Cuts
 7493861	Tainy
 7502022	Luke Combs
 7546013	KYLE
@@ -538,42 +520,45 @@ artist_id	artist_name
 7691144	Dwayne Johnson
 7691145	Talaga Steve Sale
 7732552	Elitsa Alexandrova
-7736492	Mumford & Sons
 7750062	Marshmello
 7750349	Smiley
 7792785	Marshmello
 7840685	Petit Biscuit
 7842315	Cory Asbury
 7853119	The Animals
-7961256	Ladonsyl
+7942147	Charlie Heat
 7963372	Anuel Aa
-7965014	Brian Crain
 7982519	Daniel Caesar
+7985068	Sam Tinnesz
 8084347	ReMix Reek
-8102343	NOTD
 8102362	Casper Magico
+8137804	Tekno
+8316464	Sasha Sloan
 8316531	Christian Nodal
 8373469	Bad Bunny
 8396999	Black Caviar
-8397384	Lil Troy
-8784110	Mambo Kingz
+8404944	Y2K
+8580786	Key Glock
+8828760	Mr Eazi
 8835283	LANCO
 9059186	XXXTENTACION
-9454762	5ive
-9656028	Leslie Odom Jr.
+9105527	Beyoncé Knowles-Carter
+9242988	Bad Bunny
+9355096	Demun Jones featuring Ryan Upchurch
 9814867	Ann Marie
 9839638	A Boogie Wit da Hoodie
 10184549	Banda Sinaloense MS de Sergio Lizarraga
 10247502	Khalid
 10322226	Kiana Ledé
-10348948	bbno$
 10412499	Ski Mask The Slump God
 10418932	Lauv
+10432840	Trippie Redd
 10457497	Camila Cabello
+10483241	Jordan Davis
 10516882	The Thing About Noise
-10542279	iKON
 10683116	Lewis Capaldi
 10755065	Dennis Lloyd
+10782262	Ant Beale
 10936143	Chase Rice
 10951409	DaniLeigh
 10955677	T.I.
@@ -581,20 +566,21 @@ artist_id	artist_name
 11067256	Ava Max
 11092535	Pinkfong
 11110903	Haley Reinhart
-11119217	Moneybagg Yo
+11123147	Quality Control
 11192259	Bad Bunny
 11224599	Runaway June
 11259944	Lil Baby
 11259983	Gunna
-11270493	Bhad Bhabie
+11332142	YUNGBLUD
+11332163	Jhay Cortez
 11386368	Cardi B
 11404171	Au/Ra
-11414806	Y2K
-11486246	BTS
 11515032	Bazzi
 11541190	Lil Pump
+11543848	Ellise
 11560267	Everlast
 11560404	Coolio
+11569181	Jimmie Allen
 11651375	YNW Melly
 11721441	Bad Wolves
 11761204	The Greatest Showman Ensemble
@@ -604,83 +590,122 @@ artist_id	artist_name
 11849750	BlocBoy JB
 11861911	Piano Keys
 12017823	Joyner Lucas
-12030799	Loren Gray
 12036544	Shaboozey
 12037980	Bryce Vine
+12057241	Relax Tones
 12105717	Ziv Zaifman
 12105718	Austyn Johnson
 12105719	Cameron Seely
 12105720	Daniel Everidge
-12158987	Valee
 12159468	Blackway
 12200021	XXXTENTACION
 12227133	Alina Baraz
-12239043	Anna Clendening
 12303875	Freddie Dredd
 12318805	Mustard
 12413674	Sheck Wes
-12414798	Saweetie
 12435587	Bad Bunny
 12481269	BlocBoy JB
 12490133	Raymix
 12502480	Normani
-12837216	Summer Walker
-12851096	LuckyKidd
 12887999	Juice WRLD
-12888023	Yung Gravy
+12912891	Anuel AA
 12917707	YNW Melly
 12933684	YK Osiris
 12970095	Sech
 12992973	Stephen Hoganson
 13031480	Shoreline Mafia
+13044885	LSD
 13130569	Zhavia Ward
 13154422	Lil Donald
-13199619	Silk City
-13202354	AJ Mitchell
 13203837	Alec Benjamin
 13223995	DaBaby
+13224858	Shotgun Willy
 13268631	Queen Naija
+13268784	Thutmose
 13284722	Normani
-13451152	flora cash
+13420660	Cuco
+13443659	Beau Young Prince
 13487227	benny blanco
-13508755	Fuerza Regida
-13538534	Backstreet Boys
-13738998	Cody Johnson
+13797604	Savage Ga$p
 13874141	10k.Caash
 13888782	Anuel AA
 13890259	Aquatic Focus
-13890758	Anuel Aa
 13922527	Flipp Dinero
 13969506	Rob Vicious
 13991202	Pardison Fontaine
 14116392	Kina
-14249366	Koffee
 14253456	Chris Lane
 14253457	Morgan Wallen
+14253564	Jake Owen
+14312958	JD McCrary
 14435186	Yiruma
 14466989	Polo G
+14522461	Haiti Babii
+14542950	Chance the Rapper
 14584867	Afro B
+14614166	Blueface
 14618085	Duckwrth
 14683891	Calboy
 14709280	Megan Thee Stallion
 14711092	Blueface
-14753588	147 CalBoy
-14770313	Sub Urban
+14723920	KALEO
+14909052	Andre Swilley, Cookie Cutters
 14912735	NLE Choppa
+14918893	Yung Craka
 15008667	Childish Gambino
+15058080	Stunna Girl
 15183462	Lunay
-15241512	Ali Gatie
 15475487	Lil Nas X
-15491245	Shordie Shordie
-15518126	Lil Tecca
 15657662	Luh Kel
 15750549	Jaden
+15980955	Cover Kid
 16039699	Blanco Brown
-16119426	Zhavia Ward
+16053628	Matt Stell
 16119681	Ambjaay
+16176801	RUN DMC
 16272015	Mena Massoud
+16287349	Pop Smoke
+16331381	Layton Greene
 16421546	Víctor Cárdenas
+16457522	Lil Tecca
 16475091	Dayvi
-16493234	Marshmello
+16500300	Adam Calhoun
 16500381	Adam Calhoun featuring Katie Noel
+16549289	Rubi Rose
 16709868	5 Seconds of Summer
+16747710	bbno$
+16810887	Gaten Matarazzo
+16810888	Gabriella Pizzolo
+16865703	Lindiwe Mkhize
+16865721	Billy Eichner
+16865722	Seth Rogen
+16957816	Ed Sheeran
+16961601	Ali Gatie
+16961668	Panic! At The Disco
+16965214	Trapt
+16967513	Why Don't We
+16971690	The Goo Goo Dolls
+16977233	YoungBoy Never Broke Again
+16991068	Kevin Gates
+17000044	A Boogie Wit da Hoodie
+17008953	Zac Brown Band
+17019324	James Earl Jones
+17019333	Yemi Alade
+17019351	SAINt JHN
+17019362	Shatta Wale
+17033443	Shordie Shordie
+17051687	Slipknot
+17057920	Saweetie
+17064340	Bryce Vine
+17064388	Andy Grammer
+17067316	Justin Bieber
+17067380	Nickelback
+17092252	Leslie Odom Jr.
+17092253	Anthony Ramos
+17092254	Daveed Diggs
+17092255	Okieriete Onaodowan
+17092256	Lin-Manuel Miranda
+17092257	Phillipa Soo
+17092258	Original Broadway Cast of Hamilton
+17137146	Michael Ray
+17138668	Bazzi

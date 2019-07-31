@@ -1,15 +1,12 @@
 const data_layer = require('./data_layer');
-const express = require('express');
-const app = express();
-const port = 3000;
 
-app.get('/', (req, res) => {
-    res.sendFile('public/index.html', { root : __dirname});
-});
 
-app.get('/nightjob', async (req, res) => {
-    await data_layer.downloadStaticFiles()
-    .then(data_layer.generateNBSArtistMap());
-    res.send("Night Job Complete");
-});
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const compareData = async () => {
+    const pandora200 = await data_layer.getNBSTopSpins();
+    const spotify200 = await data_layer.getSpotifyTopStreams();
+    for (let i = 0; i < 200; i++) {
+        console.log(pandora200[i]);
+    }
+}
+
+compareData();
