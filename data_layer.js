@@ -13,40 +13,6 @@ const Path = require('path');
 const Axios = require('axios');
 var csv = require('csv-parser');
 const NBS_ACCESS_TOKEN = '00ca8bb19fc5246774dfbcb6215a9cc6';
-// const SPOTIFY_CLIENT_ID = 'f530b38104e943b4baa08387593feeaf';
-// const SPOTIFY_CLIENT_SECRET = '6983abfc942944da8953282c430c2c85';
-
-// var SpotifyWebApi = require('spotify-web-api-node');
-
-// // credentials are optional
-// var spotifyApi = new SpotifyWebApi({
-//   clientId: SPOTIFY_CLIENT_ID,
-//   clientSecret: SPOTIFY_CLIENT_SECRET
-// });
-
-// async function getSpotifyToken_() {
-//   //we want to use the cache here so we're not constantly fetching the auth token
-//   var cached = spotifyApi.getAccessToken();
-//   if (cached != null) {
-//     console.log('The access token is ' + cached);
-//     return cached;
-//   }
-
-//   await spotifyApi.clientCredentialsGrant().then(
-//     function(data) {
-//       console.log('The access token expires in ' + data.body['expires_in']);
-//       console.log('The access token is ' + data.body['access_token']);
-
-//       // Save the access token so that it's used in future calls
-//       spotifyApi.setAccessToken(data.body['access_token']);
-//     },
-//     function(err) {
-//       console.log('Something went wrong when retrieving an access token', err);
-//     }
-//   );
-//   return spotifyApi.getAccessToken();
-// }
-
 const artists = require('node-persist');
 
 artists.init({
@@ -99,7 +65,7 @@ exports.generateNBSArtistMap = function () {
 
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
-      artists.setItem(data['artist_id'], data['artist_name'], );
+      artists.setItem(data['artist_id'], data['artist_name']);
     });
 
     reader.on('end', () => {
@@ -119,8 +85,12 @@ exports.downloadStaticFiles = async function () {
     .then(console.log("Static file downloaded"));
   downloadStatic(`https://api.nextbigsound.com/static/v2/?access_token=${NBS_ACCESS_TOKEN}&filepath=java/industry_report/plays/meta_artists.tsv`, 'meta_artists.tsv')
     .then(console.log("Static file downloaded"));
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, 7000);
+  });
 }
-
 
 /**
  * Get's the latest Spotify top spin charts
@@ -139,10 +109,10 @@ exports.getSpotifyTopStreams = async function () {
     });
 
     reader.on('end', () => {
-      spotify_top200.sort((a, b) => {
-        resolve(spotify_top200);
+      const sorted = spotify_top200.sort((a, b) => {
         return b[2] - a[2];
       })
+      resolve(sorted);
     });
 
     reader.on('error', (err) => {
@@ -151,6 +121,7 @@ exports.getSpotifyTopStreams = async function () {
     });
   });
 }
+
 
 /**
  * Get's the latest Pandora top spin charts
@@ -163,7 +134,6 @@ exports.getNBSTopSpins = async function () {
     separator: '\t',
     quote: ''
   }));
-
   return new Promise((resolve, reject) => {
     reader.on('data', (data) => {
       tracks.push([data['track_name'], data['artist_ids'], parseInt(data['short_value']) + parseInt(data['long_value']), data['day']]);
@@ -188,10 +158,7 @@ exports.getNBSTopSpins = async function () {
         var month = parseInt(parts[1]);
         var day = parseInt(parts[2]);
         var d = new Date(year, month - 1, day);
-        if (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime()) {
-          return true
-        }
-        return false;
+        return (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime());
       });
 
       //sort in descending order
@@ -202,32 +169,15 @@ exports.getNBSTopSpins = async function () {
       //TODO - Replace artist ids with artist names
       tracks.forEach(async (element) => {
         var artist_ids = JSON.parse(element[1]);
-        artist_ids.map(async (id) => {
-          artists.getItem(`${id}`);
+        var a = artist_ids.map(async (id) => {
+          return await artists.getItem(`${id}`);
         });
+        element[1] = await Promise.all(a);
       });
 
       resolve(tracks);
     });
   });
 }
-
-
-// exports.getSpotifyFeatured = async function () {
-//   await getSpotifyToken_();
-//   const featured = await spotifyApi.getFeaturedPlaylists();
-//   const playlists = [];
-//   featured.body.playlists.items.forEach(async (p_list) => {
-//     var x_tracks = await spotifyApi.getPlaylistTracks(p_list.id);
-//     var x_tracks_ids = x_tracks.body.items.map((el) => el.track.id);
-//     var playlist = {
-//       service: 'Spotify',
-//       name: p_list.name,
-//       tracks: x_tracks_ids
-//     }
-//     playlists.push(playlist);
-//   });
-//   return playlists;
-// }
 
 module.exports = exports;
