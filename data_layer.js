@@ -19,6 +19,11 @@ artists.init({
   dir: Path.resolve(__dirname, '.node-persist/artists')
 });
 
+// Please pay attention to the month (parts[1]); JavaScript counts months from 0:
+// January - 0, February - 1, etc.
+var current_date = new Date();
+var week_ago_date = new Date();
+week_ago_date.setDate(current_date.getDate() - 7); //date 7 days ago
 
 var exports = {};
 /**
@@ -98,20 +103,29 @@ exports.downloadStaticFiles = async function () {
  */
 exports.getSpotifyTopStreams = async function () {
   const path = Path.resolve(__dirname, 'static', 'spotify_us_weekly_latest.csv');
-  const spotify_top200 = [];
   var reader = Fs.createReadStream(path).pipe(csv({
     skipLines: 1
   }));
 
   return new Promise((resolve, reject) => {
+    var spotify_top200 = [];
     reader.on('data', (data) => {
-      spotify_top200.push([data['Track Name'], data['Artist'], parseInt(data['Streams'])]);
+      const newTrack = {
+        name: data['Track Name'],
+        artists: [data['Artist']],
+        streams: parseInt(data['Streams']),
+        rank: -1
+      }
+      spotify_top200.push(newTrack);
     });
 
     reader.on('end', () => {
       const sorted = spotify_top200.sort((a, b) => {
-        return b[2] - a[2];
+        return b.streams - a.streams;
       })
+      for (let i = 0; i < sorted.length; i++) {
+        sorted[i].rank = i + 1;
+      }
       resolve(sorted);
     });
 
@@ -125,57 +139,49 @@ exports.getSpotifyTopStreams = async function () {
 
 /**
  * Get's the latest Pandora top spin charts
- * https://www.nextbigsound.com/charts/trendsetters
+ * https://www.nextbigsound.com/charts
  */
 exports.getNBSTopSpins = async function () {
-  const tracks = [];
   const path = Path.resolve(__dirname, 'static', 'industry_report.tsv');
   var reader = Fs.createReadStream(path).pipe(csv({
     separator: '\t',
     quote: ''
   }));
   return new Promise((resolve, reject) => {
+    var pandora_top200 = [];
+
     reader.on('data', (data) => {
-      tracks.push([data['track_name'], data['artist_ids'], parseInt(data['short_value']) + parseInt(data['long_value']), data['day']]);
+      const totalStreams = parseInt(data['short_value']) + parseInt(data['long_value']);
+      const d = new Date(data['day']);
+      var artist_ids = JSON.parse(data['artist_ids']);
+
+      if (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime()) {
+        const newTrack = {
+          name: data['track_name'],
+          artists: artist_ids,
+          streams: totalStreams,
+          rank: -1
+        }
+        pandora_top200.push(newTrack);
+      }
+    });
+
+    reader.on('end', async () => {
+      //sort in descending order by total streams
+      const sorted = pandora_top200.sort((a, b) => {
+        return b.streams - a.streams;
+      }).slice(0, 200);
+
+      for (let i = 0; i < sorted.length; i++) {
+        sorted[i].rank = i + 1;
+        sorted[i].artists = await Promise.all(sorted[i].artists.map((id) => artists.getItem(`${id}`)));
+      }
+      resolve(sorted);
     });
 
     reader.on('error', (err) => {
       console.error(err);
       reject();
-    });
-
-    reader.on('end', () => {
-      // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
-      // January - 0, February - 1, etc.
-      var current_date = new Date();
-      var week_ago_date = new Date();
-      week_ago_date.setDate(current_date.getDate() - 7); //date 7 days ago
-
-      //first we filter out tracks that are out of date
-      tracks.filter((a) => {
-        var parts = a[3].split('-');
-        var year = parseInt(parts[0]);
-        var month = parseInt(parts[1]);
-        var day = parseInt(parts[2]);
-        var d = new Date(year, month - 1, day);
-        return (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime());
-      });
-
-      //sort in descending order
-      tracks.sort((a, b) => {
-        return b[2] - a[2];
-      });
-
-      //TODO - Replace artist ids with artist names
-      tracks.forEach(async (element) => {
-        var artist_ids = JSON.parse(element[1]);
-        var a = artist_ids.map(async (id) => {
-          return await artists.getItem(`${id}`);
-        });
-        element[1] = await Promise.all(a);
-      });
-
-      resolve(tracks);
     });
   });
 }
