@@ -35,6 +35,7 @@ artist_id	artist_name
 2708413	Ed Sheeran
 2709556	Jason Mraz
 2710310	Nickelback
+2710412	Keith Sweat
 2711088	Third Eye Blind
 2711234	Waka Flocka Flame
 2711236	Gucci Mane
@@ -113,6 +114,7 @@ artist_id	artist_name
 3399932	Dove Cameron
 3401958	Kanye West
 3402849	Ice Cube
+3405157	Gwen Stefani
 3407015	Louis Armstrong
 3407641	Disclosure
 3407643	Sam Smith
@@ -144,6 +146,7 @@ artist_id	artist_name
 3430857	Jeremih
 3434091	Lorde
 3435041	Queen
+3435308	Cam'Ron
 3435448	Donald Glover
 3435988	The All-American Rejects
 3437005	David Bowie
@@ -159,6 +162,7 @@ artist_id	artist_name
 3438659	Julia Michaels
 3438894	X Ambassadors
 3439061	Lil Wayne
+3439150	Bea Miller
 3439388	Taylor Swift
 3439676	Sam Hunt
 3439688	Billy Currington
@@ -244,13 +248,12 @@ artist_id	artist_name
 3497753	Donny Osmond
 3497900	The Killers
 3498730	Carrie Underwood
-3499143	Jacquees
 3499574	The Rolling Stones
 3499617	DJ Snake
 3500288	Etta James
 3501723	2Pac
+3501888	Little Big Town
 3502192	The Righteous Brothers
-3503311	Free
 3503370	Semisonic
 3503728	Angela Lansbury
 3504622	Lebo M.
@@ -298,7 +301,6 @@ artist_id	artist_name
 3631778	Jhené Aiko
 3644227	JAY-Z
 3644259	Zedd
-3644370	The Mamas & The Papas
 3723950	Loud Luxury
 3753751	George Thorogood & The Destroyers
 3757295	Cardi B
@@ -356,7 +358,6 @@ artist_id	artist_name
 4338294	Pitbull
 4338481	Farruko
 4338605	Miguel
-4338958	Miranda Lambert
 4339418	Rob $tone
 4339448	Diplo
 4339490	Nicky Jam
@@ -364,7 +365,6 @@ artist_id	artist_name
 4339640	Sean Kingston
 4340860	Bill Withers
 4341528	Eddie Money
-4342164	Ozzy Osbourne
 4342430	Jake Owen
 4342555	MNEK
 4342960	Coldplay
@@ -399,7 +399,6 @@ artist_id	artist_name
 4352398	J. Cole
 4352399	Bryson Tiller
 4352684	Earth, Wind & Fire
-4352741	Survivor
 4353044	Aerosmith
 4353244	Quinn XCII
 4353258	Journey
@@ -408,7 +407,6 @@ artist_id	artist_name
 4354506	Ram Jam
 4354566	The Charlie Daniels Band
 4354926	Incubus
-4355182	Audioslave
 4356465	Jimmy Buffett
 4357158	Kygo
 4358551	OMI
@@ -435,6 +433,7 @@ artist_id	artist_name
 4373922	Gwen Stefani
 4373959	Backstreet Boys
 4373969	Franz Ferdinand
+4375424	Redbone
 4380900	Eurythmics
 4384514	Wisin & Yandel
 4384829	Lecrae
@@ -454,11 +453,11 @@ artist_id	artist_name
 4739135	Alex & Sierra
 4742379	Zara Larsson
 4750449	Old Dominion
-4760940	WizKid
 4766586	Mitchell Tenpenny
 4771848	Sam Cooke
 5559319	Ying Yang Twins
 5571744	Daddy Yankee
+5603354	Twista
 5611592	Al Green
 5619467	The Marshall Tucker Band
 5648750	AWOLNATION
@@ -530,9 +529,7 @@ artist_id	artist_name
 8828760	Mr Eazi
 8835283	LANCO
 9059186	XXXTENTACION
-9105527	Beyoncé Knowles-Carter
 9242988	Bad Bunny
-9355096	Demun Jones featuring Ryan Upchurch
 9386374	Malaa
 9814867	Ann Marie
 9839638	A Boogie Wit da Hoodie
@@ -576,6 +573,7 @@ artist_id	artist_name
 11842441	Loren Allred
 11849750	BlocBoy JB
 11861911	Piano Keys
+11875804	White Noise
 12017823	Joyner Lucas
 12036544	Shaboozey
 12037980	Bryce Vine
@@ -636,7 +634,6 @@ artist_id	artist_name
 14711092	Blueface
 14723920	KALEO
 14726458	Abraham Vazquez
-14909052	Andre Swilley, Cookie Cutters
 14912735	NLE Choppa
 14918893	Yung Craka
 15008667	Childish Gambino
@@ -656,7 +653,6 @@ artist_id	artist_name
 16421546	Víctor Cárdenas
 16457522	Lil Tecca
 16475091	Dayvi
-16500300	Adam Calhoun
 16500381	Adam Calhoun featuring Katie Noel
 16549289	Rubi Rose
 16709868	5 Seconds of Summer
@@ -677,8 +673,9 @@ artist_id	artist_name
 17018957	Phora, Ecko, Mariah
 17019324	James Earl Jones
 17019333	Yemi Alade
-17019351	SAINt JHN
+17019336	Lord Afrixana
 17019362	Shatta Wale
+17027198	YBN Cordae
 17028900	Burna Boy
 17033443	Shordie Shordie
 17057920	Saweetie
@@ -686,6 +683,7 @@ artist_id	artist_name
 17064340	Bryce Vine
 17064388	Andy Grammer
 17067316	Justin Bieber
+17067317	Travis Scott
 17067380	Nickelback
 17092252	Leslie Odom Jr.
 17092253	Anthony Ramos

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: darkslategrey;
+            color: rgb(0, 174, 255);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active,
+        .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            display: none;
+            overflow: hidden;
+        }
+
+        #myInput {
+            background-image: url('/css/searchicon.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+        }
+
+        .childChart {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .childChart th {
+            text-align: center;
+            padding: 12px;
+        }
+
+        .childChart td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        .childChart tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .childChart tr.header,
+        .childChart tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #leftChart {
+            width: 50%;
+            float: left;
+        }
+
+        #rightChart {
+            width: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tracks or artists..."
+        title="Type in a name">
+    <div id="container">
+        <div class="childChart" id="leftChart">
+            <button class="collapsible">Tracks on Pandora and Spotify Top 200, by difference in chart ranking</button>
+            <div class="content">
+                <!--Table-->
+                <table id="rankDiff" class="table">
+                    <!--Table head-->
+                    <thead>
+                        <tr class="header">
+                            <th>Track Name</th>
+                            <th onclick="sortTable(1, 'rankDiff')">Pandora Rank</th>
+                            <th onclick="sortTable(2, 'rankDiff')">Spotify Rank</th>
+                            <th onclick="sortTable(3, 'rankDiff')">Disparity</th>
+                        </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                        ${rankBody}
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+        <div class="childChart" id="rightChart">
+            <button class="collapsible">Tracks on Pandora and Spotify Top 200, by difference in streams</button>
+            <div class="content">
+                <!--Table-->
+                <table id="streamDiff" class="table">
+                    <!--Table head-->
+                    <thead>
+                        <tr class="header">
+                            <th>Track Name</th>
+                            <th onclick="sortTable(1, 'streamDiff')">Pandora Streams</th>
+                            <th onclick="sortTable(2, 'streamDiff')">Spotify Streams</th>
+                            <th onclick="sortTable(3, 'streamDiff')">Disparity</th>
+                        </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                        ${streamBody}
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+    </div>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        }
+
+        function myFunction() {
+            var input, filter, ltable, rtable, ltr, ltd, rtr, rtd, i, ltxtValue, rtxtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ltable = document.getElementById("leftChart");
+            rtable = document.getElementById("rightChart");
+            ltr = ltable.getElementsByTagName("tr");
+            rtr = rtable.getElementsByTagName("tr");
+            for (i = 0; i < ltr.length; i++) {
+                ltd = ltr[i].getElementsByTagName("td")[0];
+                if (ltd) {
+                    ltxtValue = ltd.textContent || ltd.innerText;
+                    if (ltxtValue.toUpperCase().indexOf(filter) > -1) {
+                        ltr[i].style.display = "";
+                    } else {
+                        ltr[i].style.display = "none";
+                    }
+                }
+                rtd = rtr[i].getElementsByTagName("td")[0];
+                if (rtd) {
+                    rtxtValue = rtd.textContent || rtd.innerText;
+                    if (rtxtValue.toUpperCase().indexOf(filter) > -1) {
+                        rtr[i].style.display = "";
+                    } else {
+                        rtr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function sortTable(n, tableid) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById(tableid);
+            switching = true;
+            // Set the sorting direction to ascending:
+            dir = "asc";
+            /* Make a loop that will continue until
+            no switching has been done: */
+            while (switching) {
+                // Start by saying: no switching is done:
+                switching = false;
+                rows = table.rows;
+                /* Loop through all table rows (except the
+                first, which contains table headers): */
+                for (i = 1; i < (rows.length - 1); i++) {
+                    // Start by saying there should be no switching:
+                    shouldSwitch = false;
+                    /* Get the two elements you want to compare,
+                    one from current row and one from the next: */
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    /* Check if the two rows should switch place,
+                    based on the direction, asc or desc: */
+                    if (dir == "asc") {
+                        if (parseInt(x.innerText.replace(/,/g, '')) > parseInt(y.innerText.replace(/,/g, ''))) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (parseInt(x.innerText.replace(/,/g, '')) < parseInt(y.innerText.replace(/,/g, ''))) {
+                            // If so, mark as a switch and break the loop:
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    /* If a switch has been marked, make the switch
+                    and mark that a switch has been done: */
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    // Each time a switch is done, increase this count by 1:
+                    switchcount++;
+                } else {
+                    /* If no switching has been done AND the direction is "asc",
+                    set the direction to "desc" and run the while loop again. */
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
