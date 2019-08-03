@@ -23,6 +23,7 @@
     "fuzzy-search": "^3.0.1",
     "node-fetch": "^2.6.0",
     "node-persist": "^3.0.4",
+    "nodemailer": "^6.3.0",
     "spotify-web-api-node": "^4.0.0"
   }
 }

@@ -149,20 +149,23 @@ exports.getNBSTopSpins = async function () {
   }));
   return new Promise((resolve, reject) => {
     var pandora_top200 = [];
-
+    var checkDups = new Map();
     reader.on('data', (data) => {
-      const totalStreams = parseInt(data['short_value']) + parseInt(data['long_value']);
-      const d = new Date(data['day']);
-      var artist_ids = JSON.parse(data['artist_ids']);
+      if (!checkDups.get(parseInt(data['track_id']))) {
+        const totalStreams = parseInt(data['short_value']) + parseInt(data['long_value']);
+        const d = new Date(data['day']);
+        var artist_ids = JSON.parse(data['artist_ids']);
 
-      if (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime()) {
-        const newTrack = {
-          name: data['track_name'],
-          artists: artist_ids,
-          streams: totalStreams,
-          rank: -1
+        if (d.getTime() > week_ago_date.getTime() && d.getTime() <= current_date.getTime()) {
+          const newTrack = {
+            name: data['track_name'],
+            artists: artist_ids,
+            streams: totalStreams,
+            rank: -1
+          }
+          pandora_top200.push(newTrack);
+          checkDups.set(parseInt(data['track_id']), 1);
         }
-        pandora_top200.push(newTrack);
       }
     });
 
