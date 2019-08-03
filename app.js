@@ -1,6 +1,5 @@
 const data_layer = require('./data_layer');
 var FuzzySearch = require('fuzzy-search');
-const textInPerensRegEx = new RegExp("\\([^)]*\\)");
 
 var similarTracks1 = [];
 var similarTracks2 = [];
