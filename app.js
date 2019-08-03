@@ -85,37 +85,46 @@ const formatCSV = (similarities) => {
         similarityTable += `${match.spotify.name}\t${match.spotify.artists.toString().replace(/,/g, '/')}\t${match.spotify.rank}\t${match.spotify.streams}\t`;
         similarityTable += `${Math.abs(match.pandora.rank - match.spotify.rank)}\t${Math.abs(match.pandora.streams - match.spotify.streams)}\n`;
     }
-
     return similarityTable;
 }
 
 const formatEmailHTML = (similaritiesByRank, similaritiesByStreams) => {
     var rankBody = ``;
-    for (let j = 0; j < Math.min(similaritiesByRank.length, 15); j++) {
-        const match = similaritiesByRank[j];
-        console.log(match);
+    var streamBody = ``;
+    for (let j = 0; j < Math.min(similaritiesByRank.length, 10); j++) {
+        const match1 = similaritiesByRank[j];
+        const match2 = similaritiesByStreams[j];
         rankBody += `
         <tr>
             <th scope="row"></th>
-            <td>${match.spotify.name} by ${match.spotify.artists.toString()}</td>
-            <td><center>${match.pandora.rank}</center></td>
-            <td><center>${match.spotify.rank}</center></td>
-            <td><center>${Math.abs(match.pandora.rank - match.spotify.rank)}</center></td>
+            <td>${match1.spotify.name} by ${match1.spotify.artists.toString()}</td>
+            <td><center>${match1.pandora.rank}</center></td>
+            <td><center>${match1.spotify.rank}</center></td>
+            <td><center>${Math.abs(match1.pandora.rank - match1.spotify.rank)}</center></td>
+        </tr>`;
+
+        streamBody += `
+        <tr>
+            <th scope="row"></th>
+            <td>${match2.spotify.name} by ${match2.spotify.artists.toString()}</td>
+            <td><center>${match2.pandora.streams.toLocaleString()}</center></td>
+            <td><center>${match2.spotify.streams.toLocaleString()}</center></td>
+            <td><center>${Math.abs(match2.pandora.streams - match2.spotify.streams).toLocaleString()}</center></td>
         </tr>`;
     }
-    var rankingChart = `
+    var template = `
         <div>
             <!--Table-->
-            <h3>Tracks on both Pandora and Spotify Top 200 sorted by difference in chart ranking</h3>
-            <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
+            <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
+            <table id="rankDiff" cellpadding="5" class="table table-striped table-hover table-sm table-borderless">
             <!--Table head-->
             <thead>
                 <tr>
                     <th></th>
-                    <th>Track Name</th>
-                    <th>Pandora Rank</th>
-                    <th>Spotify Rank</th>
-                    <th>Rank Difference</th>
+                    <th> Track Name </th>
+                    <th> Pandora Rank </th>
+                    <th> Spotify Rank </th>
+                    <th> Difference </th>
                 </tr>
             </thead>
             <!--Table head-->
@@ -124,40 +133,25 @@ const formatEmailHTML = (similaritiesByRank, similaritiesByStreams) => {
                 ${rankBody}
                 <tr>
                     <th scope="row"></th>
-                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 15)} More</b></td>
+                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 10)} More</b></td>
                 </tr>
             </tbody>
             <!--Table body-->
             </table>
             <!--Table-->
-        </div>`
-
-    var streamBody = ``;
-    for (let i = 0; i < Math.min(similaritiesByStreams.length, 15); i++) {
-        const match = similaritiesByStreams[i];
-        streamBody += `
-        <tr>
-            <th scope="row"></th>
-            <td>${match.spotify.name} by ${match.spotify.artists.toString()}</td>
-            <td><center>${match.pandora.streams.toLocaleString()}</center></td>
-            <td><center>${match.spotify.streams.toLocaleString()}</center></td>
-            <td><center>${Math.abs(match.pandora.streams - match.spotify.streams).toLocaleString()}</center></td>
-        </tr>`;
-    }
-
-    const streamingChart = `
+        </div>
         <div>
             <!--Table-->
-            <h3>Tracks on both Pandora and Spotify Top 200 sorted by difference in streams</h3>
-            <table id="streamDiff" class="table table-striped table-hover table-sm table-borderless">
+            <h3>Tracks on both Pandora and Spotify Top 200, by difference in streams</h3>
+            <table id="streamDiff" cellpadding="5" class="table table-striped table-hover table-sm table-borderless">
             <!--Table head-->
             <thead>
                 <tr>
                     <th></th>
-                    <th>Track Name</th>
-                    <th>Total Pandora Streams</th>
-                    <th>Total Spotify Streams</th>
-                    <th>Streaming Difference</th>
+                    <th> Track Name </th>
+                    <th> Total Pandora Streams </th>
+                    <th> Total Spotify Streams </th>
+                    <th> Difference </th>
                 </tr>
             </thead>
             <!--Table head-->
@@ -166,14 +160,14 @@ const formatEmailHTML = (similaritiesByRank, similaritiesByStreams) => {
                 ${streamBody}
                 <tr>
                     <th scope="row"></th>
-                    <td><b>... ${similaritiesByStreams.length - Math.min(similaritiesByStreams.length, 15)} More</b></td>
+                    <td><b>... ${similaritiesByStreams.length - Math.min(similaritiesByStreams.length, 10)} More</b></td>
                 </tr>
             </tbody>
             <!--Table body-->
             </table>
             <!--Table--> 
         </div>`
-    return rankingChart.concat(streamingChart);
+    return template;
 }
 const start = async () => {
     await data_layer.downloadStaticFiles();
