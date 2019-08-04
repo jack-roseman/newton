@@ -13,7 +13,7 @@ app.get('/home', async (req, res) => {
     res.send(page);
 });
 
-app.get('/emailme', async (req, res) => {
+app.get('/emailme', async () => {
     const data = await dl.pushWeeklyEmail();
     res.send(data);
 });

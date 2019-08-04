@@ -243,7 +243,8 @@ module.exports.compareCharts = async function () {
     }
   }
   await storage.setItem('chartsIntersection', similarTracks);
-  return similarTracks;
+  await storage.setItem('pandora200', pandora200);
+  await storage.setItem('spotify200', spotify200);
 }
 
 module.exports.pushWeeklyEmail = async function () {
@@ -280,6 +281,8 @@ module.exports.pushWeeklyEmail = async function () {
 
 module.exports.getHTML = async function () {
   var chartsIntersection = await storage.getItem('chartsIntersection');
+  var pandora200 = await storage.getItem('pandora200');
+  var spotify200 = await storage.getItem('spotify200');
 
   const similarByRankDiff = chartsIntersection.slice(0).sort((a, b) => {
     return Math.abs(b.pandora.rank - b.spotify.rank) - Math.abs(a.pandora.rank - a.spotify.rank);
@@ -288,7 +291,7 @@ module.exports.getHTML = async function () {
   const similarByStreamDiff = chartsIntersection.slice(0).sort((a, b) => {
     return Math.abs(b.pandora.streams - b.spotify.streams) - Math.abs(a.pandora.streams - a.spotify.streams);
   });
-  return formatWebHTML(similarByRankDiff, similarByStreamDiff);
+  return formatWebHTML(similarByRankDiff, similarByStreamDiff, pandora200, spotify200);
 }
 
 function formatCSV(similarities) {
@@ -392,12 +395,33 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
   return template;
 }
 
-function formatWebHTML(similaritiesByRank, similaritiesByStreams) {
+function formatWebHTML(similaritiesByRank, similaritiesByStreams, pandora200, spotify200) {
   var rankBody = ``;
   var streamBody = ``;
-  for (let j = 0; j < similaritiesByRank.length; j++) {
-    const match1 = similaritiesByRank[j];
-    const match2 = similaritiesByStreams[j];
+  var pandoraChart = ``;
+  var spotifyChart = ``;
+
+  for (let j = 0; j < pandora200.length; j++) {
+    const tr1 = pandora200[j];
+    const tr2 = spotify200[j];
+    pandoraChart += `
+        <tr>
+            <th>${j+1}</th>
+            <td>${tr1.name} by ${tr1.artists.toString()}</td>
+            <td><center>${tr1.streams.toLocaleString()}</center></td>
+        </tr>`;
+
+    spotifyChart += `
+        <tr>
+            <th>${j+1}</th>
+            <td>${tr2.name} by ${tr2.artists.toString()}</td>
+            <td><center>${tr2.streams.toLocaleString()}</center></td>
+        </tr>`;
+  }
+
+  for (let i = 0; i < similaritiesByRank.length; i++) {
+    const match1 = similaritiesByRank[i];
+    const match2 = similaritiesByStreams[i];
     rankBody += `
         <tr>
             <td>${match1.spotify.name} by ${match1.spotify.artists.toString()}</td>
@@ -417,7 +441,9 @@ function formatWebHTML(similaritiesByRank, similaritiesByStreams) {
   const template = Fs.readFileSync(Path.resolve(__dirname, 'public', 'webpage.html')).toString();
   var html = parseTpl(template, {
     rankBody: rankBody,
-    streamBody: streamBody
+    streamBody: streamBody,
+    pandora200: pandoraChart,
+    spotify200: spotifyChart
   });
   return html;
 }
