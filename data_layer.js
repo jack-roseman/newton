@@ -33,10 +33,6 @@ storage.init({
   dir: Path.resolve(__dirname, '.node-persist/storage')
 });
 
-// mailingList.init({
-//   dir: Path.resolve(__dirname, '.node-persist/mailingList')
-// });
-
 // Please pay attention to the month (parts[1]); JavaScript counts months from 0:
 // January - 0, February - 1, etc.
 var current_date = new Date();
@@ -308,7 +304,7 @@ function formatCSV(similarities) {
 function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
   var rankBody = ``;
   var streamBody = ``;
-  for (let j = 0; j < Math.min(similaritiesByRank.length, 10); j++) {
+  for (let j = 0; j < Math.min(similaritiesByRank.length, 5); j++) {
     const match1 = similaritiesByRank[j];
     const match2 = similaritiesByStreams[j];
     rankBody += `
@@ -349,7 +345,7 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
                     <th> Track Name </th>
                     <th> Pandora Rank </th>
                     <th> Spotify Rank </th>
-                    <th> Difference </th>
+                    <th> Disparity </th>
                 </tr>
             </thead>
             <!--Table head-->
@@ -358,7 +354,7 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
                 ${rankBody}
                 <tr>
                     <th scope="row"></th>
-                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 10)} More</b></td>
+                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 5)} More</b></td>
                 </tr>
             </tbody>
             <!--Table body-->
@@ -385,7 +381,7 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
                 ${streamBody}
                 <tr>
                     <th scope="row"></th>
-                    <td><b>... ${similaritiesByStreams.length - Math.min(similaritiesByStreams.length, 10)} More</b></td>
+                    <td><b>... ${similaritiesByStreams.length - Math.min(similaritiesByStreams.length, 5)} More</b></td>
                 </tr>
             </tbody>
             <!--Table body-->
@@ -469,6 +465,7 @@ module.exports.start = async () => {
   await generateNBSArtistMap();
 }
 
+//helpers
 function get(path, obj, fb = `$\{${path}}`) {
   return path.split('.').reduce((res, key) => res[key] || fb, obj);
 }
