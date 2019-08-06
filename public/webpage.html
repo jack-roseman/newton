@@ -104,8 +104,8 @@
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tracks or artists..."
         title="Type in a name">
     <div id="container">
-        <div class="childChart" id="maindiffchart" width="100%">
-            <button class="collapsible">Tracks on Pandora and Spotify Top 200, including streaming and rank
+        <div class="childChart" id="maindiffchart">
+            <button class="collapsible">Tracks on Pandora and US Spotify Top 200, including streaming and rank
                 disparities</button>
             <div class="content">
                 <!--Table-->
@@ -113,7 +113,6 @@
                     <!--Table head-->
                     <thead>
                         <tr class="header">
-                            <th>Track Name</th>
                             <th>Track Name</th>
                             <th onclick="sortTable(1, 'mainTable')">Pandora Rank</th>
                             <th onclick="sortTable(2, 'mainTable')">Spotify Rank</th>
@@ -134,7 +133,7 @@
             </div>
         </div>
         <div class="childChart" id="pandora200">
-            <button class="collapsible">Current Pandora Top 200</button>
+            <button class="collapsible">Current Pandora Top 200 (US)</button>
             <div class="content">
                 <!--Table-->
                 <table class="table">
@@ -157,7 +156,7 @@
             </div>
         </div>
         <div class="childChart" id="spotify200">
-            <button class="collapsible">Current Spotify Top 200</button>
+            <button class="collapsible">Current Spotify Top 200 (US)</button>
             <div class="content">
                 <!--Table-->
                 <table class="table">
@@ -184,7 +183,7 @@
 
 
         <div class="childChart" id="pandoraexcl">
-            <button class="collapsible">Exclusively on Pandora Top 200</button>
+            <button class="collapsible">Exclusively on Pandora Top 200 (US)</button>
             <div class="content">
                 <!--Table-->
                 <table id="exclPandoraChart" class="table">
@@ -207,7 +206,7 @@
             </div>
         </div>
         <div class="childChart" id="spotifyexcl">
-            <button class="collapsible">Exclusively on Spotify Top 200</button>
+            <button class="collapsible">Exclusively on Spotify Top 200 (US)</button>
             <div class="content">
                 <!--Table-->
                 <table id="exclSpotifyChart" class="table">

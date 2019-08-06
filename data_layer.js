@@ -289,7 +289,6 @@ function formatCSV(similarities) {
 
 function formatEmailHTML(similaritiesByRank) {
   var mainChartBody = ``;
-  var streamBody = ``;
   for (let j = 0; j < Math.min(similaritiesByRank.length, 5); j++) {
     const match1 = similaritiesByRank[j];
     mainChartBody += `
@@ -356,12 +355,12 @@ module.exports.getHTML = async function () {
   var exclPandoraChart = ``;
   var exclSpotifyChart = ``;
 
+  //pandora exclusive
   for (let i = 0; i < similaritiesByRank.length; i++) {
     const match = similaritiesByRank[i];
     mainChartBody += `
         <tr>
             <td>${match.spotify.name} by ${match.spotify.artists.toString()}</td>
-            <td>${match.pandora.name} by ${match.pandora.artists.toString()}</td>
             <td><center>${match.pandora.rank}</center></td>
             <td><center>${match.spotify.rank}</center></td>
             <td><center>${Math.abs(match.pandora.rank - match.spotify.rank)}</center></td>
@@ -369,29 +368,28 @@ module.exports.getHTML = async function () {
             <td><center>${match.spotify.streams.toLocaleString()}</center></td>
             <td><center>${Math.abs(match.pandora.streams - match.spotify.streams).toLocaleString()}</center></td>
         </tr>`;
-
   }
 
+  //top 200 chart
   for (let j = 0; j < pandora200.length; j++) {
     const tr1 = pandora200[j];
     const tr2 = spotify200[j];
     pandoraChart += `
         <tr>
-            <th>${tr1.rank}</th>
+            <th><center>${tr1.rank}</center></th>
             <td>${tr1.name} by ${tr1.artists.toString()}</td>
             <td><center>${tr1.streams.toLocaleString()}</center></td>
         </tr>`;
 
     spotifyChart += `
         <tr>
-            <th>${tr2.rank}</th>
+            <th><center>${tr2.rank}</center></th>
             <td>${tr2.name} by ${tr2.artists.toString()}</td>
             <td><center>${tr2.streams.toLocaleString()}</center></td>
         </tr>`;
   }
 
-
-
+  //pandora exclusive
   for (let i = 0; i < pandoraExcl.length; i++) {
     const tr = pandoraExcl[i];
     exclPandoraChart += `
@@ -402,6 +400,8 @@ module.exports.getHTML = async function () {
       </tr>`;
 
   }
+
+  //spotify exclusive
   for (let i = 0; i < spotifyExcl.length; i++) {
     const tr = spotifyExcl[i];
     exclSpotifyChart += `
@@ -412,6 +412,7 @@ module.exports.getHTML = async function () {
       </tr>`;
 
   }
+
   const template = Fs.readFileSync(Path.resolve(__dirname, 'public', 'webpage.html')).toString();
   var html = parseTpl(template, {
     mainChartBody: mainChartBody,
