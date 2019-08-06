@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -72,12 +73,27 @@
             background-color: #f1f1f1;
         }
 
-        #leftChart {
+        #maindiffchart {
+            width: 100%;
+            float: left;
+        }
+
+        #pandora200 {
             width: 50%;
             float: left;
         }
 
-        #rightChart {
+        #spotify200 {
+            width: 50%;
+            float: right;
+        }
+
+        #pandoraexcl {
+            width: 50%;
+            float: left;
+        }
+
+        #spotifyexcl {
             width: 50%;
             float: right;
         }
@@ -88,59 +104,40 @@
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tracks or artists..."
         title="Type in a name">
     <div id="container">
-        <div class="childChart" id="leftChart">
-            <button class="collapsible">Tracks on Pandora and Spotify Top 200, by difference in chart ranking</button>
+        <div class="childChart" id="maindiffchart" width="100%">
+            <button class="collapsible">Tracks on Pandora and Spotify Top 200, including streaming and rank
+                disparities</button>
             <div class="content">
                 <!--Table-->
-                <table id="rankDiff" class="table">
+                <table id="mainTable" class="table">
                     <!--Table head-->
                     <thead>
                         <tr class="header">
                             <th>Track Name</th>
-                            <th onclick="sortTable(1, 'rankDiff')">Pandora Rank</th>
-                            <th onclick="sortTable(2, 'rankDiff')">Spotify Rank</th>
-                            <th onclick="sortTable(3, 'rankDiff')">Disparity</th>
+                            <th>Track Name</th>
+                            <th onclick="sortTable(1, 'mainTable')">Pandora Rank</th>
+                            <th onclick="sortTable(2, 'mainTable')">Spotify Rank</th>
+                            <th onclick="sortTable(3, 'mainTable')">Rank Disparity</th>
+                            <th onclick="sortTable(4, 'mainTable')">Pandora Streams</th>
+                            <th onclick="sortTable(5, 'mainTable')">Spotify Streams</th>
+                            <th onclick="sortTable(6, 'mainTable')">Streams Disparity</th>
                         </tr>
                     </thead>
                     <!--Table head-->
                     <!--Table body-->
                     <tbody>
-                        ${rankBody}
+                        ${mainChartBody}
                     </tbody>
                     <!--Table body-->
                 </table>
                 <!--Table-->
             </div>
         </div>
-        <div class="childChart" id="rightChart">
-            <button class="collapsible">Tracks on Pandora and Spotify Top 200, by difference in streams</button>
-            <div class="content">
-                <!--Table-->
-                <table id="streamDiff" class="table">
-                    <!--Table head-->
-                    <thead>
-                        <tr class="header">
-                            <th>Track Name</th>
-                            <th onclick="sortTable(1, 'streamDiff')">Pandora Streams</th>
-                            <th onclick="sortTable(2, 'streamDiff')">Spotify Streams</th>
-                            <th onclick="sortTable(3, 'streamDiff')">Disparity</th>
-                        </tr>
-                    </thead>
-                    <!--Table head-->
-                    <!--Table body-->
-                    <tbody>
-                        ${streamBody}
-                    </tbody>
-                    <!--Table body-->
-                </table>
-                <!--Table-->
-            </div>
-        </div>
-        <div class="childChart" id="leftChart">
+        <div class="childChart" id="pandora200">
             <button class="collapsible">Current Pandora Top 200</button>
             <div class="content">
                 <!--Table-->
-                <table id="pandora200" class="table">
+                <table class="table">
                     <!--Table head-->
                     <thead>
                         <tr class="header">
@@ -159,11 +156,11 @@
                 <!--Table-->
             </div>
         </div>
-        <div class="childChart" id="rightChart">
+        <div class="childChart" id="spotify200">
             <button class="collapsible">Current Spotify Top 200</button>
             <div class="content">
                 <!--Table-->
-                <table id="spotify200" class="table">
+                <table class="table">
                     <!--Table head-->
                     <thead>
                         <tr class="header">
@@ -182,6 +179,61 @@
                 <!--Table-->
             </div>
         </div>
+
+
+
+
+        <div class="childChart" id="pandoraexcl">
+            <button class="collapsible">Exclusively on Pandora Top 200</button>
+            <div class="content">
+                <!--Table-->
+                <table id="exclPandoraChart" class="table">
+                    <!--Table head-->
+                    <thead>
+                        <tr class="header">
+                            <th>Rank</th>
+                            <th>Track Name</th>
+                            <th>Streams</th>
+                        </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                        ${exclPandoraChart}
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+        <div class="childChart" id="spotifyexcl">
+            <button class="collapsible">Exclusively on Spotify Top 200</button>
+            <div class="content">
+                <!--Table-->
+                <table id="exclSpotifyChart" class="table">
+                    <!--Table head-->
+                    <thead>
+                        <tr class="header">
+                            <th>Rank</th>
+                            <th>Track Name</th>
+                            <th>Streams</th>
+                        </tr>
+                    </thead>
+                    <!--Table head-->
+                    <!--Table body-->
+                    <tbody>
+                        ${exclSpotifyChart}
+                    </tbody>
+                    <!--Table body-->
+                </table>
+                <!--Table-->
+            </div>
+        </div>
+
+
+
+
+
     </div>
     <script>
         var coll = document.getElementsByClassName("collapsible");
@@ -200,30 +252,48 @@
         }
 
         function myFunction() {
-            var input, filter, ltable, rtable, ltr, ltd, rtr, rtd, i, ltxtValue, rtxtValue;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            ltable = document.getElementById("leftChart");
-            rtable = document.getElementById("rightChart");
-            ltr = ltable.getElementsByTagName("tr");
-            rtr = rtable.getElementsByTagName("tr");
-            for (i = 0; i < ltr.length; i++) {
-                ltd = ltr[i].getElementsByTagName("td")[0];
-                if (ltd) {
-                    ltxtValue = ltd.textContent || ltd.innerText;
-                    if (ltxtValue.toUpperCase().indexOf(filter) > -1) {
-                        ltr[i].style.display = "";
-                    } else {
-                        ltr[i].style.display = "none";
+            var input = document.getElementById("myInput");
+            var filter = input.value.toUpperCase();
+            var ltable = document.getElementById("pandora200");
+            var rtable = document.getElementById("spotify200");
+            var ctable = document.getElementById("maindiffchart");
+
+
+            if (false) {
+                var ctr = ctable.getElementByTagName("tr");
+                console.log(ctr);
+                for (let i = 0; i < ctr.length; i++) {
+                    var ctd = ctr[i].getElementsByTagName("td")[0];
+                    if (ctd) {
+                        var ctxtValue = ctd.textContent || ctd.innerText;
+                        if (ctxtValue.toUpperCase().indexOf(filter) > -1) {
+                            ctr[i].style.display = "";
+                        } else {
+                            ctr[i].style.display = "none";
+                        }
                     }
                 }
-                rtd = rtr[i].getElementsByTagName("td")[0];
-                if (rtd) {
-                    rtxtValue = rtd.textContent || rtd.innerText;
-                    if (rtxtValue.toUpperCase().indexOf(filter) > -1) {
-                        rtr[i].style.display = "";
-                    } else {
-                        rtr[i].style.display = "none";
+            } else {
+                var ltr = ltable.getElementsByTagName("tr");
+                var rtr = rtable.getElementsByTagName("tr");
+                for (let i = 0; i < ltr.length; i++) {
+                    var ltd = ltr[i].getElementsByTagName("td")[0];
+                    if (ltd) {
+                        var ltxtValue = ltd.textContent || ltd.innerText;
+                        if (ltxtValue.toUpperCase().indexOf(filter) > -1) {
+                            ltr[i].style.display = "";
+                        } else {
+                            ltr[i].style.display = "none";
+                        }
+                    }
+                    var rtd = rtr[i].getElementsByTagName("td")[0];
+                    if (rtd) {
+                        var rtxtValue = rtd.textContent || rtd.innerText;
+                        if (rtxtValue.toUpperCase().indexOf(filter) > -1) {
+                            rtr[i].style.display = "";
+                        } else {
+                            rtr[i].style.display = "none";
+                        }
                     }
                 }
             }

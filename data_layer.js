@@ -238,9 +238,12 @@ module.exports.compareCharts = async function () {
       onPandoraNotSpotify.push(pandoraSong);
     }
   }
+
   await storage.setItem('chartsIntersection', similarTracks);
   await storage.setItem('pandora200', pandora200);
   await storage.setItem('spotify200', spotify200);
+  await storage.setItem('pandoraExcl', onPandoraNotSpotify);
+  await storage.setItem('spotifyExcl', onPandoraNotSpotify);
 }
 
 module.exports.pushWeeklyEmail = async function () {
@@ -251,10 +254,7 @@ module.exports.pushWeeklyEmail = async function () {
     return Math.abs(b.pandora.rank - b.spotify.rank) - Math.abs(a.pandora.rank - a.spotify.rank);
   });
 
-  const similarByStreamDiff = chartsIntersection.slice(0).sort((a, b) => {
-    return Math.abs(b.pandora.streams - b.spotify.streams) - Math.abs(a.pandora.streams - a.spotify.streams);
-  });
-  var htmlContent = formatEmailHTML(similarByRankDiff, similarByStreamDiff);
+  var htmlContent = formatEmailHTML(similarByRankDiff);
   var mailOptions = {
     from: 'pandoradigest@gmail.com',
     to: recipients.toString(),
@@ -275,20 +275,6 @@ module.exports.pushWeeklyEmail = async function () {
   });
 }
 
-module.exports.getHTML = async function () {
-  var chartsIntersection = await storage.getItem('chartsIntersection');
-  var pandora200 = await storage.getItem('pandora200');
-  var spotify200 = await storage.getItem('spotify200');
-
-  const similarByRankDiff = chartsIntersection.slice(0).sort((a, b) => {
-    return Math.abs(b.pandora.rank - b.spotify.rank) - Math.abs(a.pandora.rank - a.spotify.rank);
-  });
-
-  const similarByStreamDiff = chartsIntersection.slice(0).sort((a, b) => {
-    return Math.abs(b.pandora.streams - b.spotify.streams) - Math.abs(a.pandora.streams - a.spotify.streams);
-  });
-  return formatWebHTML(similarByRankDiff, similarByStreamDiff, pandora200, spotify200);
-}
 
 function formatCSV(similarities) {
   var similarityTable = `\tPandora Track\tPandora Artist\tPandora Rank\tTotal Pandora Streams\tSpotify Track\tSpotify Artist\tSpotify Rank\tTotal Spotify Streams\tRank Difference\tStreaming Difference\n`;
@@ -301,28 +287,18 @@ function formatCSV(similarities) {
   return similarityTable;
 }
 
-function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
-  var rankBody = ``;
+function formatEmailHTML(similaritiesByRank) {
+  var mainChartBody = ``;
   var streamBody = ``;
   for (let j = 0; j < Math.min(similaritiesByRank.length, 5); j++) {
     const match1 = similaritiesByRank[j];
-    const match2 = similaritiesByStreams[j];
-    rankBody += `
+    mainChartBody += `
         <tr>
             <th scope="row"></th>
             <td>${match1.spotify.name} by ${match1.spotify.artists.toString()}</td>
             <td><center>${match1.pandora.rank}</center></td>
             <td><center>${match1.spotify.rank}</center></td>
             <td><center>${Math.abs(match1.pandora.rank - match1.spotify.rank)}</center></td>
-        </tr>`;
-
-    streamBody += `
-        <tr>
-            <th scope="row"></th>
-            <td>${match2.spotify.name} by ${match2.spotify.artists.toString()}</td>
-            <td><center>${match2.pandora.streams.toLocaleString()}</center></td>
-            <td><center>${match2.spotify.streams.toLocaleString()}</center></td>
-            <td><center>${Math.abs(match2.pandora.streams - match2.spotify.streams).toLocaleString()}</center></td>
         </tr>`;
   }
   var template = `
@@ -351,7 +327,7 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
             <!--Table head-->
             <!--Table body-->
             <tbody>
-                ${rankBody}
+                ${mainChartBody}
                 <tr>
                     <th scope="row"></th>
                     <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 5)} More</b></td>
@@ -360,86 +336,89 @@ function formatEmailHTML(similaritiesByRank, similaritiesByStreams) {
             <!--Table body-->
             </table>
             <!--Table-->
-        </div>
-        <div>
-            <!--Table-->
-            <h3>Tracks on both Pandora and Spotify Top 200, by difference in streams</h3>
-            <table id="streamDiff" class="table table-striped table-hover table-sm table-borderless">
-            <!--Table head-->
-            <thead>
-                <tr>
-                    <th></th>
-                    <th> Track Name </th>
-                    <th> Pandora Streams </th>
-                    <th> Spotify Streams </th>
-                    <th> Difference </th>
-                </tr>
-            </thead>
-            <!--Table head-->
-            <!--Table body-->
-            <tbody>
-                ${streamBody}
-                <tr>
-                    <th scope="row"></th>
-                    <td><b>... ${similaritiesByStreams.length - Math.min(similaritiesByStreams.length, 5)} More</b></td>
-                </tr>
-            </tbody>
-            <!--Table body-->
-            </table>
-            <!--Table--> 
         </div>`
   return template;
 }
 
-function formatWebHTML(similaritiesByRank, similaritiesByStreams, pandora200, spotify200) {
-  var rankBody = ``;
-  var streamBody = ``;
+module.exports.getHTML = async function () {
+  var chartsIntersection = await storage.getItem('chartsIntersection')
+  var similaritiesByRank = chartsIntersection.sort((a, b) => {
+    return Math.abs(b.pandora.rank - b.spotify.rank) - Math.abs(a.pandora.rank - a.spotify.rank);
+  });
+  var pandora200 = await storage.getItem('pandora200');
+  var spotify200 = await storage.getItem('spotify200');
+  var pandoraExcl = await storage.getItem('pandoraExcl');
+  var spotifyExcl = await storage.getItem('spotifyExcl');
+
+  var mainChartBody = ``;
   var pandoraChart = ``;
   var spotifyChart = ``;
+  var exclPandoraChart = ``;
+  var exclSpotifyChart = ``;
+
+  for (let i = 0; i < similaritiesByRank.length; i++) {
+    const match = similaritiesByRank[i];
+    mainChartBody += `
+        <tr>
+            <td>${match.spotify.name} by ${match.spotify.artists.toString()}</td>
+            <td>${match.pandora.name} by ${match.pandora.artists.toString()}</td>
+            <td><center>${match.pandora.rank}</center></td>
+            <td><center>${match.spotify.rank}</center></td>
+            <td><center>${Math.abs(match.pandora.rank - match.spotify.rank)}</center></td>
+            <td><center>${match.pandora.streams.toLocaleString()}</center></td>
+            <td><center>${match.spotify.streams.toLocaleString()}</center></td>
+            <td><center>${Math.abs(match.pandora.streams - match.spotify.streams).toLocaleString()}</center></td>
+        </tr>`;
+
+  }
 
   for (let j = 0; j < pandora200.length; j++) {
     const tr1 = pandora200[j];
     const tr2 = spotify200[j];
     pandoraChart += `
         <tr>
-            <th>${j+1}</th>
+            <th>${tr1.rank}</th>
             <td>${tr1.name} by ${tr1.artists.toString()}</td>
             <td><center>${tr1.streams.toLocaleString()}</center></td>
         </tr>`;
 
     spotifyChart += `
         <tr>
-            <th>${j+1}</th>
+            <th>${tr2.rank}</th>
             <td>${tr2.name} by ${tr2.artists.toString()}</td>
             <td><center>${tr2.streams.toLocaleString()}</center></td>
         </tr>`;
   }
 
-  for (let i = 0; i < similaritiesByRank.length; i++) {
-    const match1 = similaritiesByRank[i];
-    const match2 = similaritiesByStreams[i];
-    rankBody += `
-        <tr>
-            <td>${match1.spotify.name} by ${match1.spotify.artists.toString()}</td>
-            <td><center>${match1.pandora.rank}</center></td>
-            <td><center>${match1.spotify.rank}</center></td>
-            <td><center>${Math.abs(match1.pandora.rank - match1.spotify.rank)}</center></td>
-        </tr>`;
 
-    streamBody += `
-        <tr>
-            <td>${match2.spotify.name} by ${match2.spotify.artists.toString()}</td>
-            <td><center>${match2.pandora.streams.toLocaleString()}</center></td>
-            <td><center>${match2.spotify.streams.toLocaleString()}</center></td>
-            <td><center>${Math.abs(match2.pandora.streams - match2.spotify.streams).toLocaleString()}</center></td>
-        </tr>`;
+
+  for (let i = 0; i < pandoraExcl.length; i++) {
+    const tr = pandoraExcl[i];
+    exclPandoraChart += `
+      <tr>
+          <th><center>${tr.rank}</center></th>
+          <td>${tr.name} by ${tr.artists.toString()}</td>
+          <td><center>${tr.streams.toLocaleString()}</center></td>
+      </tr>`;
+
+  }
+  for (let i = 0; i < spotifyExcl.length; i++) {
+    const tr = spotifyExcl[i];
+    exclSpotifyChart += `
+      <tr>
+          <th><center>${tr.rank}</center></th>
+          <td>${tr.name} by ${tr.artists.toString()}</td>
+          <td><center>${tr.streams.toLocaleString()}</center></td>
+      </tr>`;
+
   }
   const template = Fs.readFileSync(Path.resolve(__dirname, 'public', 'webpage.html')).toString();
   var html = parseTpl(template, {
-    rankBody: rankBody,
-    streamBody: streamBody,
+    mainChartBody: mainChartBody,
     pandora200: pandoraChart,
-    spotify200: spotifyChart
+    spotify200: spotifyChart,
+    exclPandoraChart: exclPandoraChart,
+    exclSpotifyChart: exclSpotifyChart
   });
   return html;
 }
