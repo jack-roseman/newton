@@ -238,12 +238,36 @@ module.exports.compareCharts = async function () {
       onPandoraNotSpotify.push(pandoraSong);
     }
   }
+  const pandoraChart = new FuzzySearch(pandora200, ['name'], {
+    caseSensitive: true,
+    sort: true
+  });
+  for (let i = 0; i < 200; i++) {
+    var spotifySong = spotify200[i];
+    const pandoraMatch = pandoraChart.search(spotifySong.name)[0];
+    if (pandoraMatch) { //found a pandora match
+      var count = 0;
+      for (let j = 0; j < spotifySong.artists.length; j++) {
+        for (let k = 0; k < pandoraMatch.artists.length; k++) {
+          if (spotifySong.artists[j].includes(pandoraMatch.artists[k])) {
+            count++;
+          }
+        }
+      }
+      if (count == 0) {
+        onSpotifyNotPandora.push(spotifySong);
+      }
+    } else {
+      //on spotify but not on pandora
+      onSpotifyNotPandora.push(spotifySong);
+    }
+  }
 
   await storage.setItem('chartsIntersection', similarTracks);
   await storage.setItem('pandora200', pandora200);
   await storage.setItem('spotify200', spotify200);
   await storage.setItem('pandoraExcl', onPandoraNotSpotify);
-  await storage.setItem('spotifyExcl', onPandoraNotSpotify);
+  await storage.setItem('spotifyExcl', onSpotifyNotPandora);
 }
 
 module.exports.pushWeeklyEmail = async function () {

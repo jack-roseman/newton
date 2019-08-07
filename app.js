@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const dl = require('./data_layer');
+var CronJob = require('cron').CronJob;
 const port = 3000;
 
 app.get('/night', async (req, res) => {
@@ -27,5 +28,11 @@ app.get('/unsubscribe/:email', async (req, res) => {
     await dl.unsubcribeRecipient(req.params.email);
     res.send("Successfully Unsubscribed " + req.params.email);
 });
+
+new CronJob('0 0 * * MON', async () => {
+    await dl.start().then(dl.compareCharts);
+    await dl.pushWeeklyEmail();
+    return;
+}, null, true, 'America/New_York');
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

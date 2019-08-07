@@ -47,6 +47,15 @@
             margin-bottom: 12px;
         }
 
+        #subscribeInput {
+            width: 20%;
+            font-size: 16px;
+            padding: 12px 20px 12px 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
         .childChart {
             border-collapse: collapse;
             width: 100%;
@@ -75,7 +84,7 @@
 
         #maindiffchart {
             width: 100%;
-            float: left;
+            display: inline-block;
         }
 
         #pandora200 {
@@ -101,9 +110,15 @@
 </head>
 
 <body>
+
+    <input type="text" style="float:right" id="subscribeInput" placeholder="Enter Email"
+        title="Type in an email address">
+    <button id="subBtn" type="submit" onclick="validate()">Subscribe</button>
+    <h2 id="result"></h2>
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tracks or artists..."
-        title="Type in a name">
+        title="Type in a track or artist">
     <div id="container">
+
         <div class="childChart" id="maindiffchart">
             <button class="collapsible">Tracks on Pandora and US Spotify Top 200, including streaming and rank
                 disparities</button>
@@ -132,6 +147,8 @@
                 <!--Table-->
             </div>
         </div>
+
+
         <div class="childChart" id="pandora200">
             <button class="collapsible">Current Pandora Top 200 (US)</button>
             <div class="content">
@@ -155,6 +172,8 @@
                 <!--Table-->
             </div>
         </div>
+
+
         <div class="childChart" id="spotify200">
             <button class="collapsible">Current Spotify Top 200 (US)</button>
             <div class="content">
@@ -180,8 +199,6 @@
         </div>
 
 
-
-
         <div class="childChart" id="pandoraexcl">
             <button class="collapsible">Exclusively on Pandora Top 200 (US)</button>
             <div class="content">
@@ -205,6 +222,8 @@
                 <!--Table-->
             </div>
         </div>
+
+
         <div class="childChart" id="spotifyexcl">
             <button class="collapsible">Exclusively on Spotify Top 200 (US)</button>
             <div class="content">
@@ -250,6 +269,28 @@
             });
         }
 
+
+        function validateEmail(email) {
+            var re =
+                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        }
+
+        function validate() {
+            var result = document.getElementById("result");
+            var email = document.getElementById("subscribeInput").value;
+            result.innerText = "";
+
+            if (validateEmail(email)) {
+                result.innerText = email + " is valid :)";
+                //result.css("color", "green");
+            } else {
+                result.innerText = email + " is not valid :(";
+                //result.css("color", "red");
+            }
+            return false;
+        }
+
         function myFunction() {
             var input = document.getElementById("myInput");
             var filter = input.value.toUpperCase();
@@ -257,10 +298,8 @@
             var rtable = document.getElementById("spotify200");
             var ctable = document.getElementById("maindiffchart");
 
-
             if (false) {
                 var ctr = ctable.getElementByTagName("tr");
-                console.log(ctr);
                 for (let i = 0; i < ctr.length; i++) {
                     var ctd = ctr[i].getElementsByTagName("td")[0];
                     if (ctd) {
@@ -275,6 +314,7 @@
             } else {
                 var ltr = ltable.getElementsByTagName("tr");
                 var rtr = rtable.getElementsByTagName("tr");
+                console.log(rtr);
                 for (let i = 0; i < ltr.length; i++) {
                     var ltd = ltr[i].getElementsByTagName("td")[0];
                     if (ltd) {
