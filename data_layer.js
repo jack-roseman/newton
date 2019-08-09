@@ -334,16 +334,16 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
     p200 += `
         <tr>
             <th scope="row"></th>
-            <td>${pTrack.rank}</td>
             <td>${pTrack.name}</td>
-            <td>${pTrack.streams}</td>
+            <td><center>${pTrack.rank}</center></td>
+            <td><center>${pTrack.streams}</center></td>
         </tr>`;
     s200 += `
         <tr>
             <th scope="row"></th>
-            <td>${sTrack.rank}</td>
             <td>${sTrack.name}</td>
-            <td>${sTrack.streams}</td>
+            <td><center>${sTrack.rank}</center></td>
+            <td><center>${sTrack.streams}</center></td>
         </tr>`;
   }
   var template = `
@@ -391,8 +391,8 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <thead>
                     <tr>
                         <th></th>
-                        <th> Rank </th>
                         <th> Track Name </th>
+                        <th> Rank </th>
                         <th> US Streams </th>
                     </tr>
                 </thead>
@@ -417,8 +417,8 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <thead>
                     <tr>
                         <th></th>
-                        <th> Rank </th>
                         <th> Track Name </th>
+                        <th> Rank </th>
                         <th> US Streams </th>
                     </tr>
                 </thead>
