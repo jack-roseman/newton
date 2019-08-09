@@ -24,11 +24,6 @@ app.get('/subscribe/:email', async (req, res) => {
     res.send("Welcome to the mailing list " + req.params.email + "!");
 });
 
-app.get('/unsubscribe', async (req, res) => {
-    await dl.unsubcribeRecipient(req.params.email);
-    res.send("Successfully Unsubscribed " + req.params.email);
-});
-
 app.get('/unsubscribe/:email', async (req, res) => {
     await dl.unsubcribeRecipient(req.params.email);
     res.send("Successfully Unsubscribed " + req.params.email);

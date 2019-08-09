@@ -334,16 +334,16 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
     p200 += `
         <tr>
             <th scope="row"></th>
-            <td><center>${pTrack.rank}</center></td>
-            <td><center>${pTrack.name}</center></td>
-            <td><center>${pTrack.streams}</center></td>
+            <td>${pTrack.rank}</td>
+            <td>${pTrack.name}</td>
+            <td>${pTrack.streams}</td>
         </tr>`;
     s200 += `
         <tr>
             <th scope="row"></th>
-            <td><center>${sTrack.rank}</center></td>
-            <td><center>${sTrack.name}</center></td>
-            <td><center>${sTrack.streams}</center></td>
+            <td>${sTrack.rank}</td>
+            <td>${sTrack.name}</td>
+            <td>${sTrack.streams}</td>
         </tr>`;
   }
   var template = `
@@ -384,7 +384,7 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
             <!--Table-->
             </div>
                 <!--Table-->
-                <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
+                <h3>Pandora Top 200</h3>
                 <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
                 <!--Table head-->
                 <thead>
@@ -410,7 +410,7 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
             <div>
             </div>
                 <!--Table-->
-                <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
+                <h3>Spotify Top 200</h3>
                 <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
                 <!--Table head-->
                 <thead>
@@ -435,7 +435,7 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <!--Table-->
             <div>
             <div>
-              <a href="https://musicchartscompare.herokuapp.com/unsubscribe">Unsubscribe from these emails</a>
+              <span>To unsubscribe go to "https://musicchartscompare.herokuapp.com/unsubscribe/youremailaddress"</span>
             </div>
             </div>
         </div>`
