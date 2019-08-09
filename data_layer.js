@@ -382,7 +382,8 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
             <!--Table body-->
             </table>
             <!--Table-->
-            </div>
+        </div>
+        <div>
                 <!--Table-->
                 <h3>Pandora Top 200</h3>
                 <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
@@ -407,8 +408,8 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <!--Table body-->
                 </table>
                 <!--Table-->
-            <div>
-            </div>
+          </div>
+          <div>
                 <!--Table-->
                 <h3>Spotify Top 200</h3>
                 <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
@@ -433,11 +434,10 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <!--Table body-->
                 </table>
                 <!--Table-->
-            <div>
-            <div>
-              <span>To unsubscribe go to "https://musicchartscompare.herokuapp.com/unsubscribe/youremailaddress"</span>
-            </div>
-            </div>
+          <div>
+          <div>
+            <span>To unsubscribe go to "https://musicchartscompare.herokuapp.com/unsubscribe/youremailaddress"</span>
+          </div>
         </div>`
   return template;
 }
