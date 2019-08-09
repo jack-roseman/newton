@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const dl = require('./data_layer');
 var CronJob = require('cron').CronJob;
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get('/night', async (req, res) => {
     const data = await dl.start().then(dl.compareCharts);

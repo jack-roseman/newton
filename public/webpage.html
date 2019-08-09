@@ -53,7 +53,7 @@
             padding: 12px 20px 12px 5px;
             border: 1px solid #ddd;
             margin-bottom: 12px;
-            display: inline-block;
+            float: left;
         }
 
         .childChart {
@@ -110,11 +110,12 @@
 </head>
 
 <body>
-
-    <input type="text" style="float:right" id="subscribeInput" placeholder="Enter Email"
+<div>
+    <input type="text" id="subscribeInput" placeholder="Enter Email"
         title="Type in an email address">
-    <button id="subBtn" type="submit" onclick="validate()">Subscribe</button>
-    <h2 id="result"></h2>
+    <button id="subBtn" type="submit" onclick="validate()">Subscribe to weekly email</button>
+    <h2 id="result" style="display:inline"></h2>
+</div>
     <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for tracks or artists..."
         title="Type in a track or artist">
     <div id="container">
@@ -283,6 +284,7 @@
 
             if (validateEmail(email)) {
                 result.innerText = email + " is valid :)";
+
                 //result.css("color", "green");
             } else {
                 result.innerText = email + " is not valid :(";
