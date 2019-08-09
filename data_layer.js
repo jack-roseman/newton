@@ -273,19 +273,21 @@ module.exports.compareCharts = async function () {
 module.exports.pushWeeklyEmail = async function () {
   var recipients = await storage.getItem('recipients');
   var chartsIntersection = await storage.getItem('chartsIntersection');
+  var pandora200 = await storage.getItem('pandora200');
+  var spotify200 = await storage.getItem('spotify200');
 
   const similarByRankDiff = chartsIntersection.slice(0).sort((a, b) => {
     return Math.abs(b.pandora.rank - b.spotify.rank) - Math.abs(a.pandora.rank - a.spotify.rank);
   });
 
-  var htmlContent = formatEmailHTML(similarByRankDiff);
+  var htmlContent = formatEmailHTML(similarByRankDiff, pandora200, spotify200);
   var mailOptions = {
     from: 'pandoradigest@gmail.com',
     to: recipients.toString(),
     subject: 'Top Charts Weekly Digest',
     html: htmlContent,
     attachments: [{ // utf-8 string as an attachment
-      filename: 'similarSongs.tsv',
+      filename: 'data.tsv',
       content: formatCSV(similarTracks)
     }]
   };
@@ -311,7 +313,7 @@ function formatCSV(similarities) {
   return similarityTable;
 }
 
-function formatEmailHTML(similaritiesByRank) {
+function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
   var mainChartBody = ``;
   for (let j = 0; j < Math.min(similaritiesByRank.length, 5); j++) {
     const match1 = similaritiesByRank[j];
@@ -324,6 +326,24 @@ function formatEmailHTML(similaritiesByRank) {
             <td><center>${Math.abs(match1.pandora.rank - match1.spotify.rank)}</center></td>
         </tr>`;
   }
+  for (let j = 0; j < Math.min(pandora200.length, 5); j++) {
+    const pTrack = pandora200[j];
+    const sTrack = spotify200[j];
+    p200 += `
+        <tr>
+            <th scope="row"></th>
+            <td><center>${pTrack.rank}</center></td>
+            <td><center>${pTrack.name}</center></td>
+            <td><center>${pTrack.streams}</center></td>
+        </tr>`;
+    s200 += `
+        <tr>
+            <th scope="row"></th>
+            <td><center>${sTrack.rank}</center></td>
+            <td><center>${sTrack.name}</center></td>
+            <td><center>${sTrack.streams}</center></td>
+        </tr>`;
+  }
   var template = `
   <style>
   th, td {
@@ -333,6 +353,7 @@ function formatEmailHTML(similaritiesByRank) {
     width: 100%;
   }
   </style>
+        <div id=constainer>
         <div>
             <!--Table-->
             <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
@@ -353,12 +374,68 @@ function formatEmailHTML(similaritiesByRank) {
                 ${mainChartBody}
                 <tr>
                     <th scope="row"></th>
-                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 5)} More</b></td>
+                    <td><b>... ${similaritiesByRank.length - Math.min(similaritiesByRank.length, 5)} <a href="https://musicchartscompare.herokuapp.com/">More</a></b></td>
                 </tr>
             </tbody>
             <!--Table body-->
             </table>
             <!--Table-->
+            </div>
+                <!--Table-->
+                <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
+                <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
+                <!--Table head-->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th> Rank </th>
+                        <th> Track Name </th>
+                        <th> US Streams </th>
+                    </tr>
+                </thead>
+                <!--Table head-->
+                <!--Table body-->
+                <tbody>
+                    ${p200}
+                    <tr>
+                        <th scope="row"></th>
+                        <td><b>... ${pandora200.length - Math.min(pandora200.length, 5)} <a href="https://musicchartscompare.herokuapp.com/">More</a></b></td>
+                    </tr>
+                </tbody>
+                <!--Table body-->
+                </table>
+                <!--Table-->
+            <div>
+            </div>
+                <!--Table-->
+                <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
+                <table id="rankDiff" class="table table-striped table-hover table-sm table-borderless">
+                <!--Table head-->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th> Rank </th>
+                        <th> Track Name </th>
+                        <th> US Streams </th>
+                    </tr>
+                </thead>
+                <!--Table head-->
+                <!--Table body-->
+                <tbody>
+                    ${s200}
+                    <tr>
+                        <th scope="row"></th>
+                        <td><b>... ${spotify200.length - Math.min(spotify200.length, 5)} <a href="https://musicchartscompare.herokuapp.com/">More</a></b></td>
+                    </tr>
+                </tbody>
+                <!--Table body-->
+                </table>
+                <!--Table-->
+            <div>
+            <div>
+              <a href="https://musicchartscompare.herokuapp.com/unsubscribe">Unsubscribe from these emails</a>
+            </div>
+            </div>
         </div>`
   return template;
 }
