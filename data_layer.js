@@ -355,7 +355,7 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
     width: 100%;
   }
   </style>
-        <div id=constainer>
+  <div id=constainer>
         <div>
             <!--Table-->
             <h3>Tracks on both Pandora and Spotify Top 200, by difference in chart ranking</h3>
@@ -434,11 +434,11 @@ function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
                 <!--Table body-->
                 </table>
                 <!--Table-->
-          <div>
+          </div>
           <div>
             <span>To unsubscribe go to "https://musicchartscompare.herokuapp.com/unsubscribe/youremailaddress"</span>
           </div>
-        </div>`
+  </div>`
   return template;
 }
 
