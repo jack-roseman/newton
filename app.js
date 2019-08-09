@@ -10,7 +10,7 @@ app.get('/night', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-    const page = await dl.getHTML()
+    const page = await dl.getHTML();
     res.send(page);
 });
 
