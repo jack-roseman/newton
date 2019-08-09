@@ -315,6 +315,8 @@ function formatCSV(similarities) {
 
 function formatEmailHTML(similaritiesByRank, pandora200, spotify200) {
   var mainChartBody = ``;
+  var p200 = ``;
+  var s200 = ``;
   for (let j = 0; j < Math.min(similaritiesByRank.length, 5); j++) {
     const match1 = similaritiesByRank[j];
     mainChartBody += `
