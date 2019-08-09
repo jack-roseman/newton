@@ -288,7 +288,7 @@ module.exports.pushWeeklyEmail = async function () {
     html: htmlContent,
     attachments: [{ // utf-8 string as an attachment
       filename: 'data.tsv',
-      content: formatCSV(similarTracks)
+      content: formatCSV(similarByRankDiff)
     }]
   };
 
